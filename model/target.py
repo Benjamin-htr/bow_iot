@@ -21,3 +21,6 @@ class Target:
       return 1
     else:
       return 0
+  
+  def target_position_y(self):
+    return (self.y)
