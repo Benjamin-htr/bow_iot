@@ -12,7 +12,7 @@ class Target:
   def get_score(self, arrow_x, arrow_y):
     #formule de calcul de la distance entre deux points dans un environnement 2D avec Euclidean
     distance = ((arrow_x - self.x) ** 2 + (arrow_y - self.y) ** 2) ** 0.5
-    #exemple
+    #exemple de score
     if distance <= 10:
       return 3
     elif distance <= 20:
