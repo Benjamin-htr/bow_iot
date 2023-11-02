@@ -21,7 +21,8 @@ import arcade.gui
 import arcade
 import random
 import os
-
+from score import ScoreView
+import os
 
 file_path = os.path.dirname(os.path.abspath(__file__))
 os.chdir(file_path)
@@ -34,7 +35,20 @@ SPRITE_SCALING = 0.5
 
 class MainMenuView(arcade.View):
     def on_show_view(self):
-        arcade.set_background_color(arcade.color.LIGHT_BROWN)
+        # Utilisation des couleurs de l'arc de tir à l'arc
+        background_color = (255, 228, 181)  # Couleur de fond (Blanched Almond)
+        self.text_color = arcade.color.BLACK  # Couleur du texte (Dark Cyan)
+        self.button_color = (220, 20, 60)  # Couleur des boutons (Crimson)
+        self.button_style = {
+            "font_name": ("Comic Sans MS"),
+            "font_size": 20,
+            "font_color": arcade.color.BLACK,
+            "border_width": 2,
+            "border_color": None,
+            "bg_color": arcade.color.GRULLO,
+        }
+
+        arcade.set_background_color(background_color)
 
     def on_draw(self):
         self.clear()
@@ -42,20 +56,28 @@ class MainMenuView(arcade.View):
             "Welcome to Archer Challenge",
             WIDTH / 2,
             HEIGHT / 1.5,
-            arcade.color.LIGHT_SKY_BLUE,
+            self.text_color,  # Utilisation de la couleur de texte
             font_size=40,
             anchor_x="center",
         )
         self.uimanager = arcade.gui.UIManager()
         self.uimanager.enable()
 
-        # Creating Buttons using UIFlatButton
-        start_button = arcade.gui.UIFlatButton(text="Jouer", width=200)
-        score_button = arcade.gui.UIFlatButton(text="Score", width=200)
-        quit_button = arcade.gui.UIFlatButton(text="Quitter", width=200)
+        start_button = arcade.gui.UIFlatButton(
+            text="Play", width=200, height=50, style=self.button_style
+        )
+
+        score_button = arcade.gui.UIFlatButton(
+            text="Score", width=200, height=50, style=self.button_style
+        )
+
+        quit_button = arcade.gui.UIFlatButton(
+            text="Exit", width=200, height=50, style=self.button_style
+        )
 
         quit_button.on_click = self.exit
-        # Adding buttons to the uimanager
+        score_button.on_click = self.showScores
+
         self.uimanager.add(
             arcade.gui.UIAnchorWidget(
                 anchor_x="center_x", align_y=-25, child=start_button
@@ -76,154 +98,9 @@ class MainMenuView(arcade.View):
     def exit(self, event):
         arcade.exit()
 
-
-class InstructionView(arcade.View):
-    def on_show_view(self):
-        arcade.set_background_color(arcade.color.ORANGE_PEEL)
-
-    def on_draw(self):
-        self.clear()
-        arcade.draw_text(
-            "Instructions Screen",
-            WIDTH / 2,
-            HEIGHT / 2,
-            arcade.color.BLACK,
-            font_size=50,
-            anchor_x="center",
-        )
-        arcade.draw_text(
-            "Click to advance",
-            WIDTH / 2,
-            HEIGHT / 2 - 75,
-            arcade.color.GRAY,
-            font_size=20,
-            anchor_x="center",
-        )
-
-    def on_mouse_press(self, _x, _y, _button, _modifiers):
-        game_view = GameView()
-        self.window.show_view(game_view)
-
-
-class GameView(arcade.View):
-    def __init__(self):
-        super().__init__()
-
-        self.time_taken = 0
-
-        # Sprite lists
-        self.player_list = arcade.SpriteList()
-        self.coin_list = arcade.SpriteList()
-
-        # Set up the player
-        self.score = 0
-        self.player_sprite = arcade.Sprite(
-            ":resources:images/animated_characters/female_person/femalePerson_idle.png",
-            SPRITE_SCALING,
-        )
-        self.player_sprite.center_x = 50
-        self.player_sprite.center_y = 50
-        self.player_list.append(self.player_sprite)
-
-        for i in range(5):
-            # Create the coin instance
-            coin = arcade.Sprite(
-                ":resources:images/items/coinGold.png", SPRITE_SCALING / 3
-            )
-
-            # Position the coin
-            coin.center_x = random.randrange(WIDTH)
-            coin.center_y = random.randrange(HEIGHT)
-
-            # Add the coin to the lists
-            self.coin_list.append(coin)
-
-    def on_show_view(self):
-        arcade.set_background_color(arcade.color.AMAZON)
-
-        # Don't show the mouse cursor
-        self.window.set_mouse_visible(False)
-
-    def on_draw(self):
-        self.clear()
-        # Draw all the sprites.
-        self.player_list.draw()
-        self.coin_list.draw()
-
-        # Put the text on the screen.
-        output = f"Score: {self.score}"
-        arcade.draw_text(output, 10, 30, arcade.color.WHITE, 14)
-        output_total = f"Total Score: {self.window.total_score}"
-        arcade.draw_text(output_total, 10, 10, arcade.color.WHITE, 14)
-
-    def on_update(self, delta_time):
-        self.time_taken += delta_time
-
-        # Call update on all sprites (The sprites don't do much in this
-        # example though.)
-        self.coin_list.update()
-        self.player_list.update()
-
-        # Generate a list of all sprites that collided with the player.
-        hit_list = arcade.check_for_collision_with_list(
-            self.player_sprite, self.coin_list
-        )
-
-        # Loop through each colliding sprite, remove it, and add to the
-        # score.
-        for coin in hit_list:
-            coin.kill()
-            self.score += 1
-            self.window.total_score += 1
-
-        # If we've collected all the games, then move to a "GAME_OVER"
-        # state.
-        if len(self.coin_list) == 0:
-            game_over_view = GameOverView()
-            game_over_view.time_taken = self.time_taken
-            self.window.set_mouse_visible(True)
-            self.window.show_view(game_over_view)
-
-    def on_mouse_motion(self, x, y, _dx, _dy):
-        """
-        Called whenever the mouse moves.
-        """
-        self.player_sprite.center_x = x
-        self.player_sprite.center_y = y
-
-
-class GameOverView(arcade.View):
-    def __init__(self):
-        super().__init__()
-        self.time_taken = 0
-
-    def on_show_view(self):
-        arcade.set_background_color(arcade.color.BLACK)
-
-    def on_draw(self):
-        self.clear()
-        """
-        Draw "Game over" across the screen.
-        """
-        arcade.draw_text("Game Over", 240, 400, arcade.color.WHITE, 54)
-        arcade.draw_text("Click to restart", 310, 300, arcade.color.WHITE, 24)
-
-        time_taken_formatted = f"{round(self.time_taken, 2)} seconds"
-        arcade.draw_text(
-            f"Time taken: {time_taken_formatted}",
-            WIDTH / 2,
-            200,
-            arcade.color.GRAY,
-            font_size=15,
-            anchor_x="center",
-        )
-
-        output_total = f"Total Score: {self.window.total_score}"
-        arcade.draw_text(output_total, 10, 10, arcade.color.WHITE, 14)
-
-    def on_mouse_press(self, _x, _y, _button, _modifiers):
-        game_view = GameView()
-        self.window.show_view(game_view)
+    def showScores(self, event):
+        score_view = ScoreView()
+        self.window.show_view(score_view)
 
 
 def main():
