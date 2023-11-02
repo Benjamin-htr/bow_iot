@@ -17,7 +17,7 @@ all Views (see: total_score).
 If Python and Arcade are installed, this example can be run from the command line with:
 python -m arcade.examples.view_instructions_and_game_over.py
 """
-
+import arcade.gui
 import arcade
 import random
 import os
@@ -32,33 +32,49 @@ HEIGHT = 600
 SPRITE_SCALING = 0.5
 
 
-class MenuView(arcade.View):
+class MainMenuView(arcade.View):
     def on_show_view(self):
         arcade.set_background_color(arcade.color.LIGHT_BROWN)
 
     def on_draw(self):
         self.clear()
         arcade.draw_text(
-            "Welcome to archer challenge",
+            "Welcome to Archer Challenge",
             WIDTH / 2,
-            HEIGHT / 2,
+            HEIGHT / 1.5,
             arcade.color.LIGHT_SKY_BLUE,
             font_size=40,
             anchor_x="center",
         )
+        self.uimanager = arcade.gui.UIManager()
+        self.uimanager.enable()
 
-        arcade.draw_text(
-            "Click to advance",
-            WIDTH / 2,
-            HEIGHT / 2 - 75,
-            arcade.color.GRAY,
-            font_size=20,
-            anchor_x="center",
+        # Creating Buttons using UIFlatButton
+        start_button = arcade.gui.UIFlatButton(text="Jouer", width=200)
+        score_button = arcade.gui.UIFlatButton(text="Score", width=200)
+        quit_button = arcade.gui.UIFlatButton(text="Quitter", width=200)
+
+        quit_button.on_click = self.exit
+        # Adding buttons to the uimanager
+        self.uimanager.add(
+            arcade.gui.UIAnchorWidget(
+                anchor_x="center_x", align_y=-25, child=start_button
+            )
         )
+        self.uimanager.add(
+            arcade.gui.UIAnchorWidget(
+                anchor_x="center_x", align_y=-100, child=score_button
+            )
+        )
+        self.uimanager.add(
+            arcade.gui.UIAnchorWidget(
+                anchor_x="center_x", align_y=-175, child=quit_button
+            )
+        )
+        self.uimanager.draw()
 
-    def on_mouse_press(self, _x, _y, _button, _modifiers):
-        instructions_view = InstructionView()
-        self.window.show_view(instructions_view)
+    def exit(self, event):
+        arcade.exit()
 
 
 class InstructionView(arcade.View):
@@ -213,7 +229,7 @@ class GameOverView(arcade.View):
 def main():
     window = arcade.Window(WIDTH, HEIGHT, "Archer challenge")
     window.total_score = 0
-    menu_view = MenuView()
+    menu_view = MainMenuView()
     window.show_view(menu_view)
     arcade.run()
 
