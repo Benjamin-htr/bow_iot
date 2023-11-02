@@ -28,3 +28,6 @@ class Target:
   
   def target_position_y(self):
     return self.hit_box_lower
+
+  def hit_box(self):
+    return self.hit_box_lower, self.hit_box_upper
