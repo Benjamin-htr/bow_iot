@@ -1,4 +1,7 @@
+import math
+
 import arcade
+from gameParts.bowSprite import BowSprite
 
 BOW_SCALING = 1
 
@@ -7,45 +10,8 @@ UPDATES_PER_FRAME = 3
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
-class Bow(arcade.Sprite):
-    def __init__(self) : 
-         # Set up parent class
-        super().__init__()
-
-        # Used for flipping between image sequences
-        self.cur_texture = 0
-
-        # Represent the power of the bow (0 to 100)
-        self.bandage = 0
-
-        self.scale = BOW_SCALING
-
-        # Load texture for idle animation
-        self.bow_idle = arcade.load_texture("assets/idle_bow.png")
-
-
-        # Load texture for bandage animation
-        self.bow_shooting_textures = arcade.load_spritesheet("assets/bandage_bow.png", 70, 90, 6, 24)
-        print("oui")
-
-    def update_animation(self, delta_time: float = 1 / 60):
-        # bow Idle animation
-        if self.bandage == 0 :
-            self.texture = self.bow_idle
-            self.cur_texture = 0
-            return
-
-
-        # bow bandage animation
-        self.cur_texture += 1
-
-        if self.cur_texture > 7 * UPDATES_PER_FRAME:
-            self.cur_texture = 0
-
-        frame = self.cur_texture // UPDATES_PER_FRAME
-
-        self.texture = self.bow_shooting_textures[frame]
-
+ANGLE_SPEED = 5
+BANDAGE_SPEED = 1
 
 
 class GameView(arcade.View):
@@ -61,7 +27,7 @@ class GameView(arcade.View):
       self.bow_list = arcade.SpriteList()
 
       # Set up the bow
-      self.bow = Bow()
+      self.bow = BowSprite(BOW_SCALING, UPDATES_PER_FRAME)
 
       self.bow.center_x = SCREEN_WIDTH // 2
       self.bow.center_y = SCREEN_HEIGHT // 2
@@ -89,12 +55,22 @@ class GameView(arcade.View):
         """
         #when the key is pressed, the bow is bandaged, it depends on the time the key is pressed
         if key == arcade.key.SPACE:
-            self.bow.bandage += 1
+            self.bow.change_bandage = BANDAGE_SPEED
+
+        # Rotate left/right
+        elif key == arcade.key.LEFT:
+            self.bow.change_angle = ANGLE_SPEED
+        elif key == arcade.key.RIGHT:
+            self.bow.change_angle = -ANGLE_SPEED
+
 
     def on_key_release(self, key, modifiers):
         #when the key is released, the arrow is shot
         if key == arcade.key.SPACE:
-            self.bow.bandage = 0
+            self.bow.change_bandage = 0
+
+        if key == arcade.key.LEFT or key == arcade.key.RIGHT:
+            self.bow.change_angle = 0
              
 
     def on_update(self, delta_time):
@@ -103,6 +79,9 @@ class GameView(arcade.View):
 
         # Update the players animation
         self.bow_list.update_animation()
+
+        # print("bandage : ", self.bow.bandage, " angle :", self.bow.angle)
+
 
 
 def main():
