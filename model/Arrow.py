@@ -40,3 +40,14 @@ class Arrow:
 
     def get_angle(self):
         return math.degrees(math.atan(self.velocity[1]/self.velocity[0]))
+
+    def get_nb_next_positions(self, position_nb):
+        positions = []
+        position_initiale = self.position
+        velocity_initiale = self.velocity
+        for i in range(position_nb):
+            self.update_position_and_velocity(0.3)
+            positions.append(self.position)
+        self.position = position_initiale
+        self.velocity = velocity_initiale
+        return positions
