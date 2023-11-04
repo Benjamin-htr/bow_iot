@@ -4,8 +4,8 @@ import math
 from time import sleep
 
 from model.Arrow import Arrow
-from model.player import Player
-from model.Target import Target
+from model.Player import Player
+from model.target import Target
 from view.game import GameView, test_game
 
 # Constantes pour le plot
@@ -69,7 +69,7 @@ class Main:
             while self.arrow.position[1] > 0:
                 self.arrow.update_position_and_velocity(TIME_STEP)
                 self.plot_trajectory()
-                print(self.arrow.get_angle())
+                #print(self.arrow.get_angle())
                 sleep(TIME_STEP)
 
             # Afficher le résultat
