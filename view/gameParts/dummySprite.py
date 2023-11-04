@@ -3,8 +3,11 @@ import arcade
 UPDATES_PER_FRAME = 3
 
 class DummySprite(arcade.Sprite) :
-    def __init__(self, scale) : 
+    def __init__(self, scale, center_x, center_y) :
         super().__init__()
+        self.center_x = center_x
+        self.center_y = center_y
+
         self.scale = scale
         self.hitted = False
 

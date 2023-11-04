@@ -4,9 +4,11 @@ import arcade
 
 
 class BowSprite(arcade.Sprite):
-    def __init__(self, scale) : 
+    def __init__(self, scale, center_x, center_y):
          # Set up parent class
         super().__init__()
+        self.center_x = center_x
+        self.center_y = center_y
 
         self.change_power = 0
         self.power = 0
