@@ -2,6 +2,7 @@ import math
 
 import arcade
 from gameParts.bowSprite import BowSprite
+from gameParts.powerIndicator import PowerIndicator
 
 BOW_SCALING = 1
 
@@ -17,22 +18,22 @@ BANDAGE_SPEED = 1
 class GameView(arcade.View):
     def __init__(self):
         super().__init__()
-        # Sprite lists
-        self.bow_list = None
         # Set up the bow
         self.bow = None
+        self.power_indicator = None
+
         self.score = 0
 
     def setup(self):
-      self.bow_list = arcade.SpriteList()
+        # Set up the bow
+        self.bow = BowSprite(BOW_SCALING)
 
-      # Set up the bow
-      self.bow = BowSprite(BOW_SCALING, UPDATES_PER_FRAME)
+        # Set up the power indicator
+        self.power_indicator = PowerIndicator(SCREEN_WIDTH - 50, SCREEN_HEIGHT // 2, 20, 100, 5)
 
-      self.bow.center_x = SCREEN_WIDTH // 2
-      self.bow.center_y = SCREEN_HEIGHT // 2
+        self.bow.center_x = 50
+        self.bow.center_y = SCREEN_HEIGHT // 2
 
-      self.bow_list.append(self.bow)
 
 
     def on_show_view(self):
@@ -43,16 +44,14 @@ class GameView(arcade.View):
         self.clear()
 
          # Draw all the sprites.
-        self.bow_list.draw()
+        self.bow.draw()
+
+        # Draw power indicator bar
+        self.power_indicator.draw()
 
          # Put the text on the screen.
         output = f"Score: {self.score}"
         arcade.draw_text(output, 10, 20, arcade.color.WHITE, 14)
-
-        # Draw power indicator bar
-        arcade.draw_rectangle_outline(SCREEN_WIDTH - 50, 100, 14, 100, arcade.color.BLACK, 5)
-        arcade.draw_rectangle_filled(SCREEN_WIDTH - 50, 100, 10, 100, arcade.color.WHITE)
-        arcade.draw_rectangle_filled(SCREEN_WIDTH - 50, 100, 10, self.bow.power, arcade.color.RED)
 
 
     def on_key_press(self, key, modifiers):
@@ -81,10 +80,14 @@ class GameView(arcade.View):
 
     def on_update(self, delta_time):
         # Move the player
-        self.bow_list.update()
+        self.bow.update()
 
         # Update the players animation
-        self.bow_list.update_animation()
+        self.bow.update_animation()
+
+        # Update the power indicator
+        self.power_indicator.update(self.bow.power)
+
 
         print("bandage : ", self.bow.power, " angle :", self.bow.angle)
 
