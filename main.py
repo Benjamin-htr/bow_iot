@@ -4,7 +4,7 @@ import math
 from time import sleep
 
 from model.Arrow import Arrow
-from model.Player import Player
+from model.player import Player
 from model.Target import Target
 
 # Constantes pour le plot

@@ -36,8 +36,8 @@ class GameView(arcade.View):
 
 
     def on_show_view(self):
-        arcade.set_background_color(arcade.color.BLACK_BEAN)
-        return 
+        arcade.set_background_color(arcade.color.VIOLET_BLUE)
+        return
 
     def on_draw(self):
         self.clear()
@@ -49,13 +49,19 @@ class GameView(arcade.View):
         output = f"Score: {self.score}"
         arcade.draw_text(output, 10, 20, arcade.color.WHITE, 14)
 
+        # Draw power indicator bar
+        arcade.draw_rectangle_outline(SCREEN_WIDTH - 50, 100, 14, 100, arcade.color.BLACK, 5)
+        arcade.draw_rectangle_filled(SCREEN_WIDTH - 50, 100, 10, 100, arcade.color.WHITE)
+        arcade.draw_rectangle_filled(SCREEN_WIDTH - 50, 100, 10, self.bow.power, arcade.color.RED)
+
+
     def on_key_press(self, key, modifiers):
         """
         Called whenever a key is pressed.
         """
         #when the key is pressed, the bow is bandaged, it depends on the time the key is pressed
         if key == arcade.key.SPACE:
-            self.bow.change_bandage = BANDAGE_SPEED
+            self.bow.change_power = BANDAGE_SPEED
 
         # Rotate left/right
         elif key == arcade.key.LEFT:
@@ -67,7 +73,7 @@ class GameView(arcade.View):
     def on_key_release(self, key, modifiers):
         #when the key is released, the arrow is shot
         if key == arcade.key.SPACE:
-            self.bow.change_bandage = 0
+            self.bow.change_power = 0
 
         if key == arcade.key.LEFT or key == arcade.key.RIGHT:
             self.bow.change_angle = 0
@@ -80,7 +86,7 @@ class GameView(arcade.View):
         # Update the players animation
         self.bow_list.update_animation()
 
-        # print("bandage : ", self.bow.bandage, " angle :", self.bow.angle)
+        print("bandage : ", self.bow.power, " angle :", self.bow.angle)
 
 
 
