@@ -25,6 +25,8 @@ class ScoreView(arcade.View):
         self.arrow_down_texture = arcade.load_texture(
             ":resources:onscreen_controls/shaded_dark/down.png"
         )
+        self.exit_texture = arcade.load_texture(":resources:images/tiles/signExit.png")
+
         self.arrow_button_width = self.arrow_up_texture.width
         self.arrow_button_height = self.arrow_up_texture.height
 
@@ -40,6 +42,13 @@ class ScoreView(arcade.View):
         # Open and read the JSON file
 
         self.clear()
+        arcade.draw_texture_rectangle(
+            WIDTH - 650,
+            HEIGHT - 420,
+            self.exit_texture.width,
+            self.exit_texture.height,
+            self.exit_texture,
+        )
         arcade.draw_text(
             "Highest scores : ",
             WIDTH / 2,
@@ -107,6 +116,19 @@ class ScoreView(arcade.View):
         self.scroll_offset = max(0, min(self.scroll_offset, len(self.data) - 1))
 
     def on_mouse_press(self, x, y, button, modifiers):
+        if (
+            WIDTH - 650 - self.exit_texture.width / 2
+            <= x
+            <= WIDTH - 650 + self.exit_texture.width / 2
+            and HEIGHT - 420 - self.exit_texture.height / 2
+            <= y
+            <= HEIGHT - 420 + self.exit_texture.height / 2
+        ):
+            from menu import MainMenuView
+
+            menu_view = MainMenuView()
+            self.window.show_view(menu_view)
+
         if len(self.data) > self.nb_lines_to_display:
             if button == arcade.MOUSE_BUTTON_LEFT:
                 # Check if the click is within the up arrow button
