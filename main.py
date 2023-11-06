@@ -5,7 +5,8 @@ from time import sleep
 
 from model.Arrow import Arrow
 from model.Player import Player
-from model.Target import Target
+from model.target import Target
+from view.game import GameView, test_game
 
 # Constantes pour le plot
 GRAVITY = -9.81  # Accélération due à la gravité (m/s^2)
@@ -68,7 +69,7 @@ class Main:
             while self.arrow.position[1] > 0:
                 self.arrow.update_position_and_velocity(TIME_STEP)
                 self.plot_trajectory()
-                print(self.arrow.get_angle())
+                #print(self.arrow.get_angle())
                 sleep(TIME_STEP)
 
             # Afficher le résultat
@@ -89,12 +90,16 @@ class Main:
 
 
 # Exemple d'exécution
+# if __name__ == "__main__":
+#     game = Main()
+#     try:
+#         game.main_loop()
+#     except KeyboardInterrupt:
+#         print("\nArrêt du jeu...")
+#     finally:
+#         # game.save_game_state()
+#         print("État du jeu sauvegardé.")
+
 if __name__ == "__main__":
-    game = Main()
-    try:
-        game.main_loop()
-    except KeyboardInterrupt:
-        print("\nArrêt du jeu...")
-    finally:
-        # game.save_game_state()
-        print("État du jeu sauvegardé.")
+    arrow = Arrow()
+    test_game(arrow)
