@@ -33,8 +33,6 @@ class GameView(arcade.View):
         self.power_indicator = None
         self.background = None
 
-        self.score = 0
-
     def setup(self):
         # Set up the bow
         self.bow = BowSprite(BOW_SCALING, 60, SCREEN_HEIGHT // 3.5)
@@ -71,7 +69,7 @@ class GameView(arcade.View):
 
 
          # Put the text on the screen.
-        output = f"Score: {self.score}"
+        output = f"Score: {self.window.logic.player.score}"
         arcade.draw_text(output, 10, 20, arcade.color.WHITE, 14)
 
 
@@ -110,16 +108,7 @@ class GameView(arcade.View):
         # Update the power indicator
         self.power_indicator.update(self.bow.power)
 
-        # Generate a list of all sprites that collided with the player.
-        arrows_hit_list = arcade.check_for_collision_with_list(self.dummy,
-                                                              self.arrows)
-
-        # Loop through each colliding sprite, remove it, and add to the score.
-        for arrow in arrows_hit_list:
-            self.window.logic.rm_arrow(arrow.arrow_logic_id)
-            arrow.remove_from_sprite_lists()
-            self.dummy.hitted = True
-            self.score += 1
+        self.check_colissions()
 
         # Update the arrow animation
         self.arrows.update_animation()
@@ -136,14 +125,22 @@ class GameView(arcade.View):
                 arrow.remove_from_sprite_lists()
 
 
-        print("arrow number : ", len(self.arrows))
-
-
         # Update the dummy animation
         self.dummy.update_animation()
 
 
-        print("bandage : ", self.bow.power, " angle :", self.bow.angle)
+
+    def check_colissions(self) : 
+        # Generate a list of all sprites that collided with the player.
+        arrows_hit_list = arcade.check_for_collision_with_list(self.dummy, self.arrows)
+        
+        # Loop through each colliding sprite, remove it, and add to the score.
+        for arrow in arrows_hit_list:
+            self.window.logic.rm_arrow(arrow.arrow_logic_id)
+            arrow.remove_from_sprite_lists()
+            self.dummy.hitted = True
+            self.window.logic.hitted()
+
 
     def launch_arrow(self):
         new_arrow_index = self.window.logic.add_arrow((0, 0))

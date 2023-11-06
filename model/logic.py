@@ -25,7 +25,7 @@ class Logic:
     def get_arrows(self):
         return self.arrows
 
-    def hitted(self, id):
+    def hitted(self):
         self.player.score += 1
 
     def set_player(self, id):

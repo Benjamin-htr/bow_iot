@@ -16,11 +16,11 @@ SCREEN_HEIGHT = 619
 def LaunchApp():
     window = arcade.Window(SCREEN_WIDTH, SCREEN_HEIGHT, "Archer challenge")
     window.logic = Logic()
-    # menu_view = MainMenuView()
-    # window.show_view(menu_view)
-    game_view = GameView()
-    game_view.setup()
-    window.show_view(game_view)
+    menu_view = MainMenuView()
+    window.show_view(menu_view)
+    # game_view = GameView()
+    # game_view.setup()
+    # window.show_view(game_view)
     arcade.run()
 
 

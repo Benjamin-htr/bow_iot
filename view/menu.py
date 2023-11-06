@@ -23,6 +23,7 @@ import random
 import arcade
 import arcade.gui
 
+from view.choose_name import ChooseName
 from view.game import GameView
 from view.score import ScoreView
 
@@ -36,12 +37,13 @@ SPRITE_SCALING = 0.5
 
 
 class MainMenuView(arcade.View):
-    def on_show_view(self):
-        background_color = (255, 228, 181)
+    def __init__(self):
+        super().__init__()
 
-        self.text_color = arcade.color.BLACK
-        self.button_color = (220, 20, 60)
-        self.button_style = {
+        self.manager = arcade.gui.UIManager()
+        self.manager.enable()
+
+        button_style = {
             "font_name": ("Comic Sans MS"),
             "font_size": 20,
             "font_color": arcade.color.BLACK,
@@ -50,7 +52,38 @@ class MainMenuView(arcade.View):
             "bg_color": arcade.color.GRULLO,
         }
 
-        arcade.set_background_color(background_color)
+        # Create a vertical BoxGroup to align buttons
+        self.v_box = arcade.gui.UIBoxLayout(space_between=20)
+
+        start_button = arcade.gui.UIFlatButton(text="Play", width=200, height=50, style=button_style)
+
+        score_button = arcade.gui.UIFlatButton(text="Score", width=200, height=50, style=button_style)
+
+        quit_button = arcade.gui.UIFlatButton(text="Exit", width=200, height=50, style=button_style)
+
+        quit_button.on_click = self.exit
+        score_button.on_click = self.showScores
+        start_button.on_click = self.showChooseName
+
+        self.v_box.add(start_button)
+        self.v_box.add(score_button)
+        self.v_box.add(quit_button)
+
+
+        # Create a widget to hold the v_box widget, that will center the buttons
+        self.manager.add(
+            arcade.gui.UIAnchorWidget(
+                align_y=-100,
+                anchor_x="center_x",
+                anchor_y="center_y",
+                child=self.v_box,
+            )
+        )
+
+
+
+    def on_show_view(self):
+        arcade.set_background_color(arcade.color.AIR_SUPERIORITY_BLUE)
 
     def on_draw(self):
         self.clear()
@@ -58,46 +91,13 @@ class MainMenuView(arcade.View):
             "Welcome to Archer Challenge",
             WIDTH / 1.5,
             HEIGHT / 1.5,
-            self.text_color,
+            arcade.color.BLACK,
             font_size=40,
             anchor_x="center",
             anchor_y="center",
         )
-        self.uimanager = arcade.gui.UIManager()
-        self.uimanager.enable()
 
-        start_button = arcade.gui.UIFlatButton(
-            text="Play", width=200, height=50, style=self.button_style
-        )
-
-        score_button = arcade.gui.UIFlatButton(
-            text="Score", width=200, height=50, style=self.button_style
-        )
-
-        quit_button = arcade.gui.UIFlatButton(
-            text="Exit", width=200, height=50, style=self.button_style
-        )
-
-        quit_button.on_click = self.exit
-        score_button.on_click = self.showScores
-        start_button.on_click = self.showGame
-
-        self.uimanager.add(
-            arcade.gui.UIAnchorWidget(
-                anchor_x="center_x", align_y=-25, child=start_button
-            )
-        )
-        self.uimanager.add(
-            arcade.gui.UIAnchorWidget(
-                anchor_x="center_x", align_y=-100, child=score_button
-            )
-        )
-        self.uimanager.add(
-            arcade.gui.UIAnchorWidget(
-                anchor_x="center_x", align_y=-175, child=quit_button
-            )
-        )
-        self.uimanager.draw()
+        self.manager.draw()
 
     def exit(self, event):
         arcade.exit()
@@ -110,6 +110,10 @@ class MainMenuView(arcade.View):
         game_view = GameView()
         game_view.setup()
         self.window.show_view(game_view)
+
+    def showChooseName(self, event) :
+        choose_name_view = ChooseName()
+        self.window.show_view(choose_name_view)
 
 
 def main():
