@@ -2,8 +2,8 @@ import math
 
 
 class Arrow:
-    def __init__(self):
-        self.position = (0, 20)  # La position est un tuple (x, y)
+    def __init__(self, position):
+        self.position = position  # La position est un tuple (x, y)
         self.velocity = (0, 0)  # La vitesse est aussi un tuple (vx, vy)
         self.gravity = -9.81  # m/s², direction négative vers le bas
 
