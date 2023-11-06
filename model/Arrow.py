@@ -12,8 +12,8 @@ class Arrow:
         angle_rad = math.radians(angle)
         # Calculer les composantes de la vitesse initiale
         self.velocity = (
-            power * math.cos(angle_rad),  # vx
-            power * math.sin(angle_rad)   # vy
+            power/ 1.6 * math.cos(angle_rad),  # vx
+            power/1.6 * math.sin(angle_rad)   # vy
         )
 
     def update_position_and_velocity(self, time_delta):
