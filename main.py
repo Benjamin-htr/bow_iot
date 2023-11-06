@@ -67,7 +67,7 @@ class Main:
             # Vérifier si la cible est touchée
             # hit = self.simulate_shot()
             while self.arrow.position[1] > 0:
-                self.arrow.update_position_and_velocity(TIME_STEP)
+                self.arrow.update_position_and_velocity(1)
                 self.plot_trajectory()
                 #print(self.arrow.get_angle())
                 sleep(TIME_STEP)
@@ -101,5 +101,5 @@ class Main:
 #         print("État du jeu sauvegardé.")
 
 if __name__ == "__main__":
-    arrow = Arrow()
+    arrow = Arrow((0,20))
     test_game(arrow)
