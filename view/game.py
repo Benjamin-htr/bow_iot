@@ -81,6 +81,7 @@ class GameView(arcade.View):
         """
         Called whenever a key is pressed.
         """
+        self.arrow_logic.reset()
         #when the key is pressed, the bow is bandaged, it depends on the time the key is pressed
         if key == arcade.key.SPACE:
             self.bow.change_power = BANDAGE_SPEED
@@ -126,6 +127,7 @@ class GameView(arcade.View):
 
 
         print("bandage : ", self.bow.power, " angle :", self.bow.angle)
+        print("vitesse : ", self.arrow_logic.velocity, " position :", self.arrow_logic.position, " angle :", self.arrow_logic.get_angle())
 
 
 

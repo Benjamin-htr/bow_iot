@@ -3,7 +3,7 @@ import math
 
 class Arrow:
     def __init__(self):
-        self.position = (0, 10)  # La position est un tuple (x, y)
+        self.position = (0, 20)  # La position est un tuple (x, y)
         self.velocity = (0, 0)  # La vitesse est aussi un tuple (vx, vy)
         self.gravity = -9.81  # m/s², direction négative vers le bas
 
@@ -20,12 +20,7 @@ class Arrow:
         # print(f"Position actuelle : {self.position}")
         # print(f"Vélocité actuelle : {self.velocity}")
         # Mettre à jour la position de la flèche
-        self.position = (
-            self.position[0] + self.velocity[0] *
-            time_delta,  # Mise à jour de x
-            self.position[1] + self.velocity[1] * \
-            time_delta   # Mise à jour de y
-        )
+        self.position = (self.position[0] + self.velocity[0] * time_delta,self.position[1] + self.velocity[1] * time_delta )
         # Mettre à jour la vitesse verticale
         self.velocity = (
             self.velocity[0],  # vx reste constante
@@ -51,3 +46,7 @@ class Arrow:
         self.position = position_initiale
         self.velocity = velocity_initiale
         return positions
+
+    def reset(self):
+        self.position = (0, 20)
+        self.velocity = (0, 0)
