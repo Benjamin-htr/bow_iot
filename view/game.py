@@ -17,7 +17,9 @@ ANGLE_SPEED = 5
 BANDAGE_SPEED = 1
 
 # Transform from the meters position to the pixel position
-def transform_position(position, initial_position = (0, 0)) :
+
+
+def transform_position(position, initial_position=(0, 0)):
     return (position[0] * 12 + initial_position[0], position[1] * 12 + initial_position[1])
 
 
@@ -34,16 +36,18 @@ class GameView(arcade.View):
         self.initial_position_y = self.window.height // 3.5
 
     def setup(self):
-        
 
         # Set up the bow
-        self.bow = BowSprite(BOW_SCALING, self.initial_position_x, self.initial_position_y)
+        self.bow = BowSprite(
+            BOW_SCALING, self.initial_position_x, self.initial_position_y)
 
-        #Set up the dummy
-        self.dummy = DummySprite(DUMMY_SCALING, self.window.width - 150, self.window.height // 3.5)
+        # Set up the dummy
+        self.dummy = DummySprite(
+            DUMMY_SCALING, self.window.width - 150, self.window.height // 3.5)
 
         # Set up the power indicator
-        self.power_indicator = PowerIndicator(self.window.width - 50, 100, 20, 100, 5)
+        self.power_indicator = PowerIndicator(
+            self.window.width - 50, 100, 20, 100, 5)
 
         # Set up the background
         self.background = arcade.load_texture("../assets/background.png")
@@ -55,9 +59,10 @@ class GameView(arcade.View):
         self.clear()
 
         # Draw the background texture
-        arcade.draw_lrwh_rectangle_textured(0, 0, self.window.width, self.window.height, self.background)
+        arcade.draw_lrwh_rectangle_textured(
+            0, 0, self.window.width, self.window.height, self.background)
 
-         # Draw all the sprites.
+        # Draw all the sprites.
         self.bow.draw()
 
         # Draw the dummy
@@ -69,8 +74,7 @@ class GameView(arcade.View):
         # Draw the arrow
         self.arrows.draw()
 
-
-         # Draw the score
+        # Draw the score
         output = f"Score: {self.window.logic.player.score}"
         arcade.draw_text(output, 10, 20, arcade.color.WHITE, 14)
 
@@ -78,12 +82,11 @@ class GameView(arcade.View):
         output = f"Name: {self.window.logic.player.name}"
         arcade.draw_text(output, 10, 40, arcade.color.WHITE, 14)
 
-
     def on_key_press(self, key, modifiers):
         """
         Called whenever a key is pressed.
-        """        
-        #when the key is pressed, the bow is bandaged, it depends on the time the key is pressed
+        """
+        # when the key is pressed, the bow is bandaged, it depends on the time the key is pressed
         if key == arcade.key.SPACE:
             self.bow.change_power = BANDAGE_SPEED
 
@@ -95,16 +98,15 @@ class GameView(arcade.View):
         elif key == arcade.key.ESCAPE:
             self.finish_game()
 
-
     def on_key_release(self, key, modifiers):
-        #when the key is released, the arrow is shot
+        # when the key is released, the arrow is shot
         if key == arcade.key.SPACE:
             self.bow.change_power = 0
             self.launch_arrow()
+            self.window.logic.timer.start()
 
         if key == arcade.key.LEFT or key == arcade.key.RIGHT:
             self.bow.change_angle = 0
-             
 
     def on_update(self, delta_time):
         # Move the player
@@ -123,37 +125,39 @@ class GameView(arcade.View):
 
         for arrow in self.arrows:
             self.window.logic.update_arrow(arrow.arrow_logic_id, delta_time)
-            new_position = transform_position(self.window.logic.get_arrow(arrow.arrow_logic_id).position, (self.initial_position_x, self.initial_position_y))
-            arrow.update(new_position[0], new_position[1], self.window.logic.get_arrow(arrow.arrow_logic_id).get_angle())
+            new_position = transform_position(self.window.logic.get_arrow(
+                arrow.arrow_logic_id).position, (self.initial_position_x, self.initial_position_y))
+            arrow.update(new_position[0], new_position[1], self.window.logic.get_arrow(
+                arrow.arrow_logic_id).get_angle())
 
-        #delete the arrow if it is out of the screen
+        # delete the arrow if it is out of the screen
         for arrow in self.arrows:
             if arrow.center_x > self.window.width or arrow.center_x < 0 or arrow.center_y < 0:
                 self.window.logic.rm_arrow(arrow.arrow_logic_id)
                 arrow.remove_from_sprite_lists()
 
-
         # Update the dummy animation
         self.dummy.update_animation()
 
-
-
-    def check_colissions(self) : 
+    def check_colissions(self):
         # Generate a list of all sprites that collided with the player.
-        arrows_hit_list = arcade.check_for_collision_with_list(self.dummy, self.arrows)
-        
+        arrows_hit_list = arcade.check_for_collision_with_list(
+            self.dummy, self.arrows)
+
         # Loop through each colliding sprite, remove it, and add to the score.
         for arrow in arrows_hit_list:
             self.window.logic.rm_arrow(arrow.arrow_logic_id)
             arrow.remove_from_sprite_lists()
             self.dummy.hitted = True
             self.window.logic.hitted()
-
+            print(self.window.logic.timer.get_elapsed_time())
 
     def launch_arrow(self):
         new_arrow_index = self.window.logic.add_arrow((0, 0))
-        self.window.logic.get_arrow(new_arrow_index).set_initial_velocity(self.bow.angle, self.bow.power)
-        self.arrows.append(ArrowSprite(ARROW_SCALING, self.initial_position_x, self.initial_position_y, self.bow.angle, new_arrow_index))
+        self.window.logic.get_arrow(new_arrow_index).set_initial_velocity(
+            self.bow.angle, self.bow.power)
+        self.arrows.append(ArrowSprite(ARROW_SCALING, self.initial_position_x,
+                           self.initial_position_y, self.bow.angle, new_arrow_index))
 
     def finish_game(self):
         self.window.logic.save_player()

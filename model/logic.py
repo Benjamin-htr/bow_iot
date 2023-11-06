@@ -2,12 +2,14 @@ import json
 
 from model.Arrow import Arrow
 from model.Player import Player
+from model.Timer import Timer
 
 
 class Logic:
     def __init__(self):
         self.player = Player("Player1", "RFID1234")
         self.arrows = []
+        self.timer = Timer()
 
     def add_arrow(self, position):
         self.arrows.append(Arrow(position))
@@ -33,7 +35,8 @@ class Logic:
             data = json.load(json_file)
             for obj in data:
                 if obj["uuid"] == id:
-                    self.player = Player(obj["name"], obj["uuid"], obj["score"])
+                    self.player = Player(
+                        obj["name"], obj["uuid"], obj["score"])
                 else:
                     return "non"
 
