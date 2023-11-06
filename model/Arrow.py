@@ -28,10 +28,6 @@ class Arrow:
             self.velocity[1] + self.gravity * time_delta
         )
 
-        # Si la flèche atteint le sol (y <= 0), on arrête la simulation
-        if self.position[1] <= 0:
-            self.position = (self.position[0], 0)
-            self.velocity = (0, 0)
 
     def get_angle(self):
         return math.degrees(math.atan(self.velocity[1]/self.velocity[0] if self.velocity[0] else 1))

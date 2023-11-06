@@ -33,6 +33,9 @@ class DummySprite(arcade.Sprite) :
         frame = self.cur_texture // UPDATES_PER_FRAME
         self.texture = self.hitted_dummy_textures[frame]
 
+        if frame == 5 :
+            self.hitted = False
+
         
         
 

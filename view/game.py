@@ -89,14 +89,11 @@ class GameView(arcade.View):
         elif key == arcade.key.RIGHT:
             self.bow.change_angle = -ANGLE_SPEED
 
-        self.dummy.hitted = False
-
 
     def on_key_release(self, key, modifiers):
         #when the key is released, the arrow is shot
         if key == arcade.key.SPACE:
             self.bow.change_power = 0
-            self.dummy.hitted = True
             self.launch_arrow()
 
         if key == arcade.key.LEFT or key == arcade.key.RIGHT:
@@ -119,17 +116,27 @@ class GameView(arcade.View):
 
         # Loop through each colliding sprite, remove it, and add to the score.
         for arrow in arrows_hit_list:
+            self.window.logic.rm_arrow(arrow.arrow_logic_id)
             arrow.remove_from_sprite_lists()
+            self.dummy.hitted = True
             self.score += 1
 
         # Update the arrow animation
         self.arrows.update_animation()
 
+        for arrow in self.arrows:
+            self.window.logic.update_arrow(arrow.arrow_logic_id, delta_time)
+            new_position = transform_position(self.window.logic.get_arrow(arrow.arrow_logic_id).position)
+            arrow.update(new_position[0], new_position[1], self.window.logic.get_arrow(arrow.arrow_logic_id).get_angle())
 
-        for i in range(len(self.arrows_logic)):
-            self.arrows_logic[i].update_position_and_velocity(delta_time)
-            new_position = transform_position(self.arrows_logic[i].position)
-            self.arrows[i].update(new_position[0], new_position[1], self.arrows_logic[i].get_angle())
+        #delete the arrow if it is out of the screen
+        for arrow in self.arrows:
+            if arrow.center_x > SCREEN_WIDTH or arrow.center_x < 0 or arrow.center_y < 0:
+                self.window.logic.rm_arrow(arrow.arrow_logic_id)
+                arrow.remove_from_sprite_lists()
+
+
+        print("arrow number : ", len(self.arrows))
 
 
         # Update the dummy animation
@@ -139,10 +146,9 @@ class GameView(arcade.View):
         print("bandage : ", self.bow.power, " angle :", self.bow.angle)
 
     def launch_arrow(self):
-        self.window.logic.add_arrow((0, 0))
-        self.arrows_logic.append(newArrow)
-        self.arrows_logic[-1].set_initial_velocity(self.bow.angle, self.bow.power)
-        self.arrows.append(ArrowSprite(ARROW_SCALING, 60, SCREEN_HEIGHT // 3.5, self.bow.angle))
+        new_arrow_index = self.window.logic.add_arrow((0, 0))
+        self.window.logic.get_arrow(new_arrow_index).set_initial_velocity(self.bow.angle, self.bow.power)
+        self.arrows.append(ArrowSprite(ARROW_SCALING, 60, SCREEN_HEIGHT // 3.5, self.bow.angle, new_arrow_index))
 
 
 
