@@ -1,9 +1,9 @@
 from model.Arrow import Arrow
-from model.Player import Player
+from model.player import Player
 import json
 
-class Logic():
 
+class Logic:
     def __init__(self):
         self.player = Player("Player1", "RFID1234")
         self.arrows = []
@@ -32,11 +32,9 @@ class Logic():
             data = json.load(json_file)
             for obj in data:
                 if obj["uuid"] == id:
-                    self.player = Player(obj["name"],obj["uuid"],obj["score"])
+                    self.player = Player(obj["name"], obj["uuid"], obj["score"])
                 else:
                     return "non"
 
-    def set_player_with_info(self, id,name,score):
-        self.player = Player(id,name,score)
-
-
+    def set_player_with_info(self, id, name, score):
+        self.player = Player(id, name, score)

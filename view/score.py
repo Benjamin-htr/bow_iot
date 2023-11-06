@@ -67,7 +67,7 @@ class ScoreView(arcade.View):
 
         arcade.draw_text(
             "Highest scores : ",
-            WIDTH / 2,
+            WIDTH / 1.5,
             HEIGHT / 1.25,
             self.text_color,
             font_size=40,
@@ -106,7 +106,7 @@ class ScoreView(arcade.View):
 
             arcade.draw_text(
                 data_line,
-                WIDTH / 2,
+                WIDTH / 1.5,
                 y,
                 arcade.color.BLACK,
                 font_size=16,
@@ -118,7 +118,7 @@ class ScoreView(arcade.View):
 
         if len(self.data) > self.nb_lines_to_display:
             arcade.draw_texture_rectangle(
-                WIDTH - 60,
+                WIDTH * 1.25,
                 HEIGHT - 60,
                 self.arrow_button_width,
                 self.arrow_button_height,
@@ -126,7 +126,7 @@ class ScoreView(arcade.View):
             )
 
             arcade.draw_texture_rectangle(
-                WIDTH - 60,
+                WIDTH * 1.25,
                 60,
                 self.arrow_button_width,
                 self.arrow_button_height,
@@ -186,9 +186,9 @@ class ScoreView(arcade.View):
         if len(self.data) > self.nb_lines_to_display:
             if button == arcade.MOUSE_BUTTON_LEFT:
                 if (
-                    WIDTH - 60 - self.arrow_button_width / 2
+                    WIDTH *1.25 - self.arrow_button_width / 2
                     <= x
-                    <= WIDTH - 60 + self.arrow_button_width / 2
+                    <= WIDTH *1.25 + self.arrow_button_width / 2
                     and HEIGHT - 60 - self.arrow_button_height / 2
                     <= y
                     <= HEIGHT - 60 + self.arrow_button_height / 2
@@ -196,9 +196,9 @@ class ScoreView(arcade.View):
                     self.scrollDown()
 
                 elif (
-                    WIDTH - 60 - self.arrow_button_width / 2
+                    WIDTH *1.25 - self.arrow_button_width / 2
                     <= x
-                    <= WIDTH - 60 + self.arrow_button_width / 2
+                    <= WIDTH *1.25 + self.arrow_button_width / 2
                     and 60 - self.arrow_button_height / 2
                     <= y
                     <= 60 + self.arrow_button_height / 2

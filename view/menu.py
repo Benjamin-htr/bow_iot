@@ -38,7 +38,7 @@ SPRITE_SCALING = 0.5
 class MainMenuView(arcade.View):
     def on_show_view(self):
         background_color = (255, 228, 181)
-     
+
         self.text_color = arcade.color.BLACK
         self.button_color = (220, 20, 60)
         self.button_style = {
@@ -56,11 +56,12 @@ class MainMenuView(arcade.View):
         self.clear()
         arcade.draw_text(
             "Welcome to Archer Challenge",
-            WIDTH / 2,
+            WIDTH / 1.5,
             HEIGHT / 1.5,
             self.text_color,
             font_size=40,
             anchor_x="center",
+            anchor_y="center",
         )
         self.uimanager = arcade.gui.UIManager()
         self.uimanager.enable()
