@@ -1,6 +1,7 @@
-from model.Arrow import Arrow
-from model.player import Player
 import json
+
+from model.Arrow import Arrow
+from model.Player import Player
 
 
 class Logic:

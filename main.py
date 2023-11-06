@@ -5,7 +5,6 @@ from time import sleep
 
 import arcade
 
-from model.logic import Logic
 from model.Logic import Logic
 from view.game import GameView
 from view.menu import MainMenuView
