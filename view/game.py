@@ -33,9 +33,6 @@ class GameView(arcade.View):
         self.power_indicator = None
         self.background = None
 
-        #logic variables (REMEMBER TO REMOVE THEM)
-        self.arrows_logic = []
-
         self.score = 0
 
     def setup(self):
@@ -142,7 +139,7 @@ class GameView(arcade.View):
         print("bandage : ", self.bow.power, " angle :", self.bow.angle)
 
     def launch_arrow(self):
-        newArrow = Arrow((0,0))
+        self.window.logic.add_arrow((0, 0))
         self.arrows_logic.append(newArrow)
         self.arrows_logic[-1].set_initial_velocity(self.bow.angle, self.bow.power)
         self.arrows.append(ArrowSprite(ARROW_SCALING, 60, SCREEN_HEIGHT // 3.5, self.bow.angle))
