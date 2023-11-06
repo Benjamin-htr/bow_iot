@@ -10,6 +10,7 @@ class Logic():
 
     def add_arrow(self, position):
         self.arrows.append(Arrow(position))
+        return len(self.arrows)-1
 
     def update_arrow(self, id, step):
         self.arrows[id].update_position_and_velocity(step)
@@ -39,4 +40,16 @@ class Logic():
     def set_player_with_info(self, id,name,score):
         self.player = Player(id,name,score)
 
+    def save_player(self):
+        new_user = {
+            "uuid": self.player.rfid_tag,
+            "name": self.player.name,
+            "score": self.player.score
+        }
+        with open("../score.json", "r") as json_file:
+            data = json.load(json_file)
+            data.append(new_user)
+
+        with open("../score.json", "w") as json_file:
+            json.dump(data,json_file,indent=4)
 
