@@ -1,11 +1,12 @@
-import arcade.gui
-import arcade
 import json
-from dotenv import load_dotenv
 import os
 import smtplib
-from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
+import arcade
+import arcade.gui
+from dotenv import load_dotenv
 
 # Load values from .env file
 load_dotenv()
@@ -177,7 +178,7 @@ class ScoreView(arcade.View):
             <= y
             <= HEIGHT - 420 + self.exit_texture.height / 2
         ):
-            from menu import MainMenuView
+            from view.menu import MainMenuView
 
             menu_view = MainMenuView()
             self.window.show_view(menu_view)

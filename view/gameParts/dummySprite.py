@@ -14,11 +14,11 @@ class DummySprite(arcade.Sprite) :
         self.cur_texture = 0
 
         # Load texture for idle animation
-        self.idle_dummy = arcade.load_texture("assets/static_dummy.png")
+        self.idle_dummy = arcade.load_texture("../assets/static_dummy.png")
 
 
         # Load texture for hitted animation
-        self.hitted_dummy_textures = arcade.load_spritesheet("assets/hitted_dummy.png", 140, 110, 3, 6)
+        self.hitted_dummy_textures = arcade.load_spritesheet("../assets/hitted_dummy.png", 140, 110, 3, 6)
 
     def update_animation(self, delta_time: float = 1 / 60):
         # dummy Idle animation

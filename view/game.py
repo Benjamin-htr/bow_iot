@@ -49,7 +49,7 @@ class GameView(arcade.View):
         self.power_indicator = PowerIndicator(SCREEN_WIDTH - 50, 100, 20, 100, 5)
 
         # Set up the background
-        self.background = arcade.load_texture("assets/background.png")
+        self.background = arcade.load_texture("../assets/background.png")
 
     def on_show_view(self):
         return

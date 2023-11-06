@@ -17,11 +17,11 @@ class BowSprite(arcade.Sprite):
         self.scale = scale
 
         # Load texture for idle animation
-        self.bow_idle = arcade.load_texture("assets/idle_bow.png")
+        self.bow_idle = arcade.load_texture("../assets/idle_bow.png")
 
 
         # Load texture for bandage animation
-        self.bow_shooting_textures = arcade.load_spritesheet("assets/bandage_bow_shorter.png", 70, 90, 6, 12)
+        self.bow_shooting_textures = arcade.load_spritesheet("../assets/bandage_bow_shorter.png", 70, 90, 6, 12)
         print(len(self.bow_shooting_textures))
 
 

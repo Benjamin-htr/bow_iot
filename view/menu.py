@@ -107,6 +107,7 @@ class MainMenuView(arcade.View):
 
     def showGame(self, event):
         game_view = GameView()
+        game_view.setup()
         self.window.show_view(game_view)
 
 

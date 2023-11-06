@@ -11,7 +11,7 @@ class ArrowSprite(arcade.Sprite) :
         self.angle = angle
 
         # Load texture for idle animation
-        self.idle_arrow = arcade.load_texture("assets/static_arrow.png")
+        self.idle_arrow = arcade.load_texture("../assets/static_arrow.png")
 
 
     def update_animation(self, delta_time: float = 1 / 60):
