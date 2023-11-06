@@ -35,10 +35,9 @@ SPRITE_SCALING = 0.5
 
 class MainMenuView(arcade.View):
     def on_show_view(self):
-        # Utilisation des couleurs de l'arc de tir à l'arc
-        background_color = (255, 228, 181)  # Couleur de fond (Blanched Almond)
-        self.text_color = arcade.color.BLACK  # Couleur du texte (Dark Cyan)
-        self.button_color = (220, 20, 60)  # Couleur des boutons (Crimson)
+        background_color = (255, 228, 181)
+        self.text_color = arcade.color.BLACK
+        self.button_color = (220, 20, 60)
         self.button_style = {
             "font_name": ("Comic Sans MS"),
             "font_size": 20,
@@ -56,7 +55,7 @@ class MainMenuView(arcade.View):
             "Welcome to Archer Challenge",
             WIDTH / 2,
             HEIGHT / 1.5,
-            self.text_color,  # Utilisation de la couleur de texte
+            self.text_color,
             font_size=40,
             anchor_x="center",
         )
