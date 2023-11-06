@@ -1,6 +1,14 @@
 import arcade.gui
 import arcade
 import json
+from dotenv import load_dotenv
+import os
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+# Load values from .env file
+load_dotenv()
 
 
 WIDTH = 800
@@ -15,7 +23,16 @@ class ScoreView(arcade.View):
         self.scroll_speed = 1
         self.nb_lines_to_display = 15
         self.text_color = arcade.color.BLACK
+        self.isEmailSent = False
         self.data = []
+        self.button_style = {
+            "font_name": ("Comic Sans MS"),
+            "font_size": 20,
+            "font_color": arcade.color.BLACK,
+            "border_width": 2,
+            "border_color": None,
+            "bg_color": arcade.color.GRULLO,
+        }
         with open("../score.json", "r") as json_file:
             self.data = json.load(json_file)
         self.data = sorted(self.data, key=lambda x: x["score"], reverse=True)
@@ -46,6 +63,7 @@ class ScoreView(arcade.View):
             self.exit_texture.height,
             self.exit_texture,
         )
+
         arcade.draw_text(
             "Highest scores : ",
             WIDTH / 2,
@@ -56,7 +74,24 @@ class ScoreView(arcade.View):
         )
         self.uimanager = arcade.gui.UIManager()
         self.uimanager.enable()
-
+        if self.isEmailSent == False:
+            email_button = arcade.gui.UIFlatButton(
+                text="Send email", width=200, height=50, style=self.button_style
+            )
+            email_button.on_click = self.sendEmail
+            self.uimanager.add(
+                arcade.gui.UIAnchorWidget(
+                    anchor_x="center_x", align_y=-250, child=email_button
+                )
+            )
+        else:
+            arcade.draw_text(
+                "Email sent !",
+                150,
+                50,
+                arcade.color.GREEN,
+                font_size=35,
+            )
         start_index = self.scroll_offset
         end_index = start_index + self.nb_lines_to_display
 
@@ -103,6 +138,32 @@ class ScoreView(arcade.View):
         self.scroll_offset += self.scroll_speed
         self.scroll_offset = max(0, min(self.scroll_offset, len(self.data) - 1))
 
+    def sendEmail(self, event):
+        if self.isEmailSent == False:
+            email_username = os.getenv("SMTP_USERNAME")
+            email_password = os.getenv("SMTP_PWD")
+            to_email = "martinmille@outlook.fr"
+            smtp_server = "smtp-mail.outlook.com"
+            smtp_port = 587
+            server = smtplib.SMTP(smtp_server, smtp_port)
+            server.starttls()
+            server.login(email_username, email_password)
+            top_5_scores = self.data[:5]
+            subject = "Highest scores"
+            email_content = "Here are the highest scores:\n\n"
+            for i, score_data in enumerate(top_5_scores, start=1):
+                player_name = score_data["name"]
+                player_score = score_data["score"]
+                email_content += f"Joueur {i}: {player_name} - {player_score}\n"
+            msg = MIMEMultipart()
+            msg["From"] = email_username
+            msg["To"] = to_email
+            msg["Subject"] = subject
+            msg.attach(MIMEText(email_content, "plain"))
+            server.sendmail(email_username, to_email, msg.as_string())
+            server.quit()
+            self.isEmailSent = True
+
     def scrollDown(self):
         self.scroll_offset -= self.scroll_speed
         self.scroll_offset = max(0, min(self.scroll_offset, len(self.data) - 1))
@@ -133,7 +194,6 @@ class ScoreView(arcade.View):
                 ):
                     self.scrollDown()
 
-     
                 elif (
                     WIDTH - 60 - self.arrow_button_width / 2
                     <= x
