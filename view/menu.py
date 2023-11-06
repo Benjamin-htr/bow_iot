@@ -1,24 +1,4 @@
-"""
-This program shows how to:
-  * Have one or more instruction screens
-  * Show a 'Game over' text and halt the game
-  * Allow the user to restart the game
-
-Make a separate class for each view (screen) in your game.
-The class will inherit from arcade.View. The structure will
-look like an arcade.Window as each view will need to have its own draw,
-update and window event methods. To switch a view, simply create a view
-with `view = MyView()` and then use the view.show() method.
-
-This example shows how you can set data from one View on another View to pass data
-around (see: time_taken), or you can store data on the Window object to share data between
-all Views (see: total_score).
-
-If Python and Arcade are installed, this example can be run from the command line with:
-python -m arcade.examples.view_instructions_and_game_over.py
-"""
 import os
-import random
 
 import arcade
 import arcade.gui
@@ -29,11 +9,6 @@ from view.score import ScoreView
 
 file_path = os.path.dirname(os.path.abspath(__file__))
 os.chdir(file_path)
-
-
-WIDTH = 800
-HEIGHT = 600
-SPRITE_SCALING = 0.5
 
 
 class MainMenuView(arcade.View):
@@ -89,8 +64,8 @@ class MainMenuView(arcade.View):
         self.clear()
         arcade.draw_text(
             "Welcome to Archer Challenge",
-            WIDTH / 1.5,
-            HEIGHT / 1.5,
+            self.window.width / 2,
+            self.window.height / 1.5,
             arcade.color.BLACK,
             font_size=40,
             anchor_x="center",
@@ -114,15 +89,3 @@ class MainMenuView(arcade.View):
     def showChooseName(self, event) :
         choose_name_view = ChooseName()
         self.window.show_view(choose_name_view)
-
-
-def main():
-    window = arcade.Window(WIDTH, HEIGHT, "Archer challenge")
-    window.total_score = 0
-    menu_view = MainMenuView()
-    window.show_view(menu_view)
-    arcade.run()
-
-
-if __name__ == "__main__":
-    main()

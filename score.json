@@ -98,5 +98,10 @@
     "uuid": "7q8r9s0t",
     "name": "Eve",
     "score": 110
+  },
+  {
+    "uuid": "Player1",
+    "name": "BEN",
+    "score": 6
   }
 ]
