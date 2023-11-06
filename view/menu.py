@@ -17,12 +17,14 @@ all Views (see: total_score).
 If Python and Arcade are installed, this example can be run from the command line with:
 python -m arcade.examples.view_instructions_and_game_over.py
 """
-import arcade.gui
-import arcade
+import os
 import random
-import os
-from score import ScoreView
-import os
+
+import arcade
+import arcade.gui
+
+from view.game import GameView
+from view.score import ScoreView
 
 file_path = os.path.dirname(os.path.abspath(__file__))
 os.chdir(file_path)
@@ -36,6 +38,7 @@ SPRITE_SCALING = 0.5
 class MainMenuView(arcade.View):
     def on_show_view(self):
         background_color = (255, 228, 181)
+     
         self.text_color = arcade.color.BLACK
         self.button_color = (220, 20, 60)
         self.button_style = {
@@ -76,6 +79,7 @@ class MainMenuView(arcade.View):
 
         quit_button.on_click = self.exit
         score_button.on_click = self.showScores
+        start_button.on_click = self.showGame
 
         self.uimanager.add(
             arcade.gui.UIAnchorWidget(
@@ -100,6 +104,10 @@ class MainMenuView(arcade.View):
     def showScores(self, event):
         score_view = ScoreView()
         self.window.show_view(score_view)
+
+    def showGame(self, event):
+        game_view = GameView()
+        self.window.show_view(game_view)
 
 
 def main():

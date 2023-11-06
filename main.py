@@ -3,10 +3,17 @@ import json
 import math
 from time import sleep
 
+import arcade
+
 from model.Arrow import Arrow
-from model.player import Player
+from model.Logic import Logic
+from model.Player import Player
 from model.Target import Target
 from view.game import GameView, test_game
+from view.menu import MainMenuView
+
+SCREEN_WIDTH = 1100
+SCREEN_HEIGHT = 619
 
 # Constantes pour le plot
 GRAVITY = -9.81  # Accélération due à la gravité (m/s^2)
@@ -100,5 +107,12 @@ class Main:
 #         # game.save_game_state()
 #         print("État du jeu sauvegardé.")
 
+def LaunchApp() : 
+    window = arcade.Window(SCREEN_WIDTH, SCREEN_HEIGHT, "Archer challenge")
+    window.logic = Logic()
+    menu_view = MainMenuView()
+    window.show_view(menu_view)
+    arcade.run()
+
 if __name__ == "__main__":
-    test_game()
+    LaunchApp()
