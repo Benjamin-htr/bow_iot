@@ -2,6 +2,7 @@ import math
 
 import arcade
 
+from model.Arrow import Arrow
 from view.gameParts.arrowSprite import ArrowSprite
 from view.gameParts.bowSprite import BowSprite
 from view.gameParts.dummySprite import DummySprite
@@ -17,19 +18,23 @@ SCREEN_HEIGHT = 619
 ANGLE_SPEED = 5
 BANDAGE_SPEED = 1
 
+# Transform from the meters position to the pixel position
+def transform_position(position) :
+    return (position[0] * 12 + 60, position[1] * 12 + SCREEN_HEIGHT // 3.5)
+
 
 class GameView(arcade.View):
-    def __init__(self, arrow):
+    def __init__(self):
         super().__init__()
 
         self.bow = None
         self.dummy = None
-        self.arrow = None
+        self.arrows = arcade.SpriteList()
         self.power_indicator = None
         self.background = None
 
         #logic variables (REMEMBER TO REMOVE THEM)
-        self.arrow_logic = arrow
+        self.arrows_logic = []
 
         self.score = 0
 
@@ -40,12 +45,8 @@ class GameView(arcade.View):
         #Set up the dummy
         self.dummy = DummySprite(DUMMY_SCALING, SCREEN_WIDTH - 150, SCREEN_HEIGHT // 3.5)
 
-        # Set up the arrow
-        self.arrow = ArrowSprite(ARROW_SCALING, self.bow.center_x, self.bow.center_y, self.bow.angle)
-
         # Set up the power indicator
         self.power_indicator = PowerIndicator(SCREEN_WIDTH - 50, 100, 20, 100, 5)
-
 
         # Set up the background
         self.background = arcade.load_texture("assets/background.png")
@@ -69,7 +70,7 @@ class GameView(arcade.View):
         self.power_indicator.draw()
 
         # Draw the arrow
-        self.arrow.draw()
+        self.arrows.draw()
 
 
          # Put the text on the screen.
@@ -80,8 +81,7 @@ class GameView(arcade.View):
     def on_key_press(self, key, modifiers):
         """
         Called whenever a key is pressed.
-        """
-        self.arrow_logic.reset()
+        """        
         #when the key is pressed, the bow is bandaged, it depends on the time the key is pressed
         if key == arcade.key.SPACE:
             self.bow.change_power = BANDAGE_SPEED
@@ -100,7 +100,7 @@ class GameView(arcade.View):
         if key == arcade.key.SPACE:
             self.bow.change_power = 0
             self.dummy.hitted = True
-            self.arrow_logic.set_initial_velocity(self.bow.angle, self.bow.power)
+            self.launch_arrow()
 
         if key == arcade.key.LEFT or key == arcade.key.RIGHT:
             self.bow.change_angle = 0
@@ -116,25 +116,45 @@ class GameView(arcade.View):
         # Update the power indicator
         self.power_indicator.update(self.bow.power)
 
-        # Update the arrow animation
-        self.arrow.update_animation()
+        # Generate a list of all sprites that collided with the player.
+        arrows_hit_list = arcade.check_for_collision_with_list(self.dummy,
+                                                              self.arrows)
 
-        self.arrow_logic.update_position_and_velocity(delta_time)
-        self.arrow.update(self.arrow_logic.position[0], self.arrow_logic.position[1], self.arrow_logic.get_angle())
+        # Loop through each colliding sprite, remove it, and add to the score.
+        for arrow in arrows_hit_list:
+            arrow.remove_from_sprite_lists()
+            self.score += 1
+
+        # Update the arrow animation
+        self.arrows.update_animation()
+
+
+        for i in range(len(self.arrows_logic)):
+            self.arrows_logic[i].update_position_and_velocity(delta_time)
+            new_position = transform_position(self.arrows_logic[i].position)
+            self.arrows[i].update(new_position[0], new_position[1], self.arrows_logic[i].get_angle())
+
 
         # Update the dummy animation
         self.dummy.update_animation()
 
 
         print("bandage : ", self.bow.power, " angle :", self.bow.angle)
-        print("vitesse : ", self.arrow_logic.velocity, " position :", self.arrow_logic.position, " angle :", self.arrow_logic.get_angle())
+
+    def launch_arrow(self):
+        newArrow = Arrow((0,0))
+        self.arrows_logic.append(newArrow)
+        self.arrows_logic[-1].set_initial_velocity(self.bow.angle, self.bow.power)
+        self.arrows.append(ArrowSprite(ARROW_SCALING, 60, SCREEN_HEIGHT // 3.5, self.bow.angle))
 
 
 
-def test_game(arrow):
+
+
+def test_game():
     window = arcade.Window(SCREEN_WIDTH, SCREEN_HEIGHT, "Archer challenge")
     window.total_score = 0
-    game_view = GameView(arrow)
+    game_view = GameView()
     game_view.setup()
     window.show_view(game_view)
     arcade.run()

@@ -4,8 +4,8 @@ import math
 from time import sleep
 
 from model.Arrow import Arrow
-from model.Player import Player
-from model.target import Target
+from model.player import Player
+from model.Target import Target
 from view.game import GameView, test_game
 
 # Constantes pour le plot
@@ -101,5 +101,4 @@ class Main:
 #         print("État du jeu sauvegardé.")
 
 if __name__ == "__main__":
-    arrow = Arrow((0,20))
-    test_game(arrow)
+    test_game()
