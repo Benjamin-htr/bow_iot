@@ -1,6 +1,6 @@
 import arcade
 
-TEXT_SCALE = 0.4
+TEXT_SCALE = 0.5
 SCORE_SCALE = 0.2
 
 
@@ -112,7 +112,7 @@ class TopBarGui:
             center_x,
             center_y,
             arcade.color.BLACK,
-            20,
+            17,
             width=self.background_text.width * TEXT_SCALE,
             align="center",
             anchor_x="center",
@@ -134,7 +134,7 @@ class TopBarGui:
             center_x,
             center_y,
             arcade.color.BLACK,
-            20,
+            17,
             width=self.background_text.width * TEXT_SCALE,
             align="center",
             anchor_x="center",
