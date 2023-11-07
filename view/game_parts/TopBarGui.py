@@ -130,7 +130,7 @@ class TopBarGui:
         )
 
         arcade.draw_text(
-            f"{round(self.timer, 1)}",
+            f"{round(self.timer, 1)} s",
             center_x,
             center_y,
             arcade.color.BLACK,

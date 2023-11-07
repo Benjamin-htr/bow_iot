@@ -134,6 +134,10 @@ class GameView(arcade.View):
             self.window.logic.bow.stop_turn()
 
     def on_update(self, delta_time):
+        # We check if the game is finished
+        if self.window.logic.timer.remaining_time <= 0:
+            self.finish_game()
+
         # We update the bow
         self.bow.update()
         self.window.logic.bow.update()
