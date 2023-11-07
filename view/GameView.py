@@ -11,8 +11,6 @@ BOW_SCALING = 1.5
 DUMMY_SCALING = 2
 ARROW_SCALING = 1.5
 
-# BANDAGE_SPEED = 1
-
 
 def transform_position(position, initial_position=(0, 0)):
     """Transforms the position of the arrow from the logic to the view

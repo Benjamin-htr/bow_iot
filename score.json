@@ -1,192 +1,22 @@
 [
     {
-        "uuid": "1a2b3c4d",
-        "name": "Alice",
-        "score": 100
-    },
-    {
-        "uuid": "5e6f7g8h",
-        "name": "Bob",
-        "score": 75
-    },
-    {
-        "uuid": "9i0j1k2l",
-        "name": "Charlie",
-        "score": 120
-    },
-    {
-        "uuid": "3m4n5o6p",
-        "name": "David",
-        "score": 90
-    },
-    {
-        "uuid": "7q8r9s0t",
-        "name": "Eve",
-        "score": 110
-    },
-    {
-        "uuid": "1a2b3c4d",
-        "name": "Alice",
-        "score": 100
-    },
-    {
-        "uuid": "5e6f7g8h",
-        "name": "Bob",
-        "score": 75
-    },
-    {
-        "uuid": "9i0j1k2l",
-        "name": "Charlie",
-        "score": 120
-    },
-    {
-        "uuid": "3m4n5o6p",
-        "name": "David",
-        "score": 90
-    },
-    {
-        "uuid": "7q8r9s0t",
-        "name": "Eve",
-        "score": 110
-    },
-    {
-        "uuid": "1a2b3c4d",
-        "name": "Alice",
-        "score": 100
-    },
-    {
-        "uuid": "5e6f7g8h",
-        "name": "Bob",
-        "score": 75
-    },
-    {
-        "uuid": "9i0j1k2l",
-        "name": "Charlie",
-        "score": 120
-    },
-    {
-        "uuid": "3m4n5o6p",
-        "name": "David",
-        "score": 90
-    },
-    {
-        "uuid": "7q8r9s0t",
-        "name": "Eve",
-        "score": 110
-    },
-    {
-        "uuid": "1a2b3c4d",
-        "name": "Alice",
-        "score": 100
-    },
-    {
-        "uuid": "5e6f7g8h",
-        "name": "Bob",
-        "score": 75
-    },
-    {
-        "uuid": "9i0j1k2l",
-        "name": "Charlie",
-        "score": 120
-    },
-    {
-        "uuid": "3m4n5o6p",
-        "name": "David",
-        "score": 90
-    },
-    {
-        "uuid": "7q8r9s0t",
-        "name": "Eve",
-        "score": 110
-    },
-    {
-        "uuid": "Player1",
-        "name": "BEN",
-        "score": 6
-    },
-    {
-        "uuid": "Player1",
-        "name": "DAN",
-        "score": 5
-    },
-    {
-        "uuid": "Player1",
-        "name": "ABA",
-        "score": 0
-    },
-    {
-        "uuid": "Player1",
-        "name": "BEX",
-        "score": 11
-    },
-    {
-        "uuid": "Player1",
-        "name": "AAA",
-        "score": 0
-    },
-    {
-        "uuid": "Player1",
-        "name": "AAA",
-        "score": 4
-    },
-    {
-        "uuid": "Player1",
-        "name": "AAA",
-        "score": 0
-    },
-    {
-        "uuid": "Player1",
-        "name": "AAA",
-        "score": 2
-    },
-    {
-        "uuid": "Player1",
-        "name": "BAM",
-        "score": 6
-    },
-    {
-        "uuid": "Player1",
-        "name": "BAZ",
-        "score": 6
-    },
-    {
-        "uuid": "Player1",
-        "name": "ABA",
-        "score": 8
-    },
-    {
-        "uuid": "Player1",
-        "name": "ZAA",
-        "score": 0
-    },
-    {
-        "uuid": "Player1",
-        "name": "BAA",
-        "score": 6
-    },
-    {
-        "uuid": "Player1",
-        "name": "ZBA",
-        "score": 2
-    },
-    {
-        "uuid": "Player1",
-        "name": "BZA",
-        "score": 2
-    },
-    {
         "uuid": "Player1",
         "name": "AXL",
         "score": 14
     },
     {
         "uuid": "Player1",
-        "name": "ZAB",
-        "score": 11
+        "name": "BEN",
+        "score": 41
     },
     {
         "uuid": "Player1",
-        "name": "ZAZ",
-        "score": 13
+        "name": "AXL",
+        "score": 27
+    },
+    {
+        "uuid": "Player1",
+        "name": "BEN",
+        "score": 43
     }
 ]
