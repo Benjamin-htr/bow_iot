@@ -4,7 +4,7 @@ import math
 class Arrow:
     """Class to represent the logic of an arrow"""
 
-    def __init__(self, position):
+    def __init__(self, position: tuple):
         self.position = position  # La position est un tuple (x, y)
         self.velocity = (0, 0)  # La vitesse est aussi un tuple (vx, vy)
         self.gravity = -9.81  # m/s², direction négative vers le bas

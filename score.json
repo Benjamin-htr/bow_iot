@@ -118,5 +118,10 @@
         "uuid": "Player1",
         "name": "BEX",
         "score": 11
+    },
+    {
+        "uuid": "Player1",
+        "name": "AAA",
+        "score": 0
     }
 ]

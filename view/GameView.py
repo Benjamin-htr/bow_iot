@@ -11,8 +11,7 @@ BOW_SCALING = 1.5
 DUMMY_SCALING = 2
 ARROW_SCALING = 1.5
 
-ANGLE_SPEED = 5
-BANDAGE_SPEED = 1
+# BANDAGE_SPEED = 1
 
 
 def transform_position(position, initial_position=(0, 0)):
@@ -38,7 +37,7 @@ class GameView(arcade.View):
     def __init__(self):
         super().__init__()
 
-        self.bow = None
+        self.bow: BowSprite = None
         self.dummy = None
         self.arrows = arcade.SpriteList()
         self.power_indicator = None
@@ -52,8 +51,12 @@ class GameView(arcade.View):
 
         # Set up the bow
         self.bow = BowSprite(
-            BOW_SCALING, self.initial_position_x, self.initial_position_y
+            BOW_SCALING,
+            self.initial_position_x,
+            self.initial_position_y,
+            self.window.logic.bow,
         )
+        self.window.logic.bow.load_sprite(self.bow)
 
         # Set up the dummy
         self.dummy = DummySprite(
@@ -106,35 +109,36 @@ class GameView(arcade.View):
         """
         # when the key is pressed, the bow is bandaged, it depends on the time the key is pressed
         if key == arcade.key.SPACE:
-            self.bow.change_power = BANDAGE_SPEED
+            self.window.logic.bow.bandage()
 
         # Rotate left/right
         elif key == arcade.key.LEFT:
-            self.bow.change_angle = ANGLE_SPEED
+            self.window.logic.bow.turn_left()
         elif key == arcade.key.RIGHT:
-            self.bow.change_angle = -ANGLE_SPEED
+            self.window.logic.bow.turn_right()
         elif key == arcade.key.ESCAPE:
             self.finish_game()
 
     def on_key_release(self, key, modifiers):
         # when the key is released, the arrow is shot
         if key == arcade.key.SPACE:
-            self.bow.change_power = 0
             self.launch_arrow()
+            self.window.logic.bow.stop_bandage()
             self.window.logic.timer.start()
 
         if key == arcade.key.LEFT or key == arcade.key.RIGHT:
-            self.bow.change_angle = 0
+            self.window.logic.bow.stop_turn()
 
     def on_update(self, delta_time):
-        # Move the player
+        # We update the bow
         self.bow.update()
+        self.window.logic.bow.update()
 
         # Update the players animation
         self.bow.update_animation()
 
         # Update the power indicator
-        self.power_indicator.update(self.bow.power)
+        self.power_indicator.update(self.window.logic.bow.power)
 
         # Update the top bar gui
         if self.window.logic.timer.get_elapsed_time() is not None:
@@ -154,6 +158,7 @@ class GameView(arcade.View):
                 self.window.logic.get_arrow(arrow.arrow_logic_id).position,
                 (self.initial_position_x, self.initial_position_y),
             )
+            print(new_position)
             arrow.update(
                 new_position[0],
                 new_position[1],
@@ -173,6 +178,23 @@ class GameView(arcade.View):
         # Update the dummy animation
         self.dummy.update_animation()
 
+        print(
+            "bow logic angle : ",
+            self.window.logic.bow.get_angle(),
+            "bow sprite angle : ",
+            self.bow.angle,
+        )
+        print(
+            "bow logic power : ",
+            self.window.logic.bow.power,
+        )
+        print(
+            "nb arrows logic : ",
+            len(self.window.logic.get_arrows()),
+            "nb arrows view : ",
+            len(self.arrows),
+        )
+
     def check_colissions(self):
         """Check if an arrow has hit the dummy"""
         # Generate a list of all sprites that collided with the player.
@@ -188,16 +210,13 @@ class GameView(arcade.View):
 
     def launch_arrow(self):
         """Launch an arrow"""
-        new_arrow_index = self.window.logic.add_arrow((0, 0))
-        self.window.logic.get_arrow(new_arrow_index).set_initial_velocity(
-            self.bow.angle, self.bow.power
-        )
+        new_arrow_index = self.window.logic.launch_arrow()
         self.arrows.append(
             ArrowSprite(
                 ARROW_SCALING,
                 self.initial_position_x,
                 self.initial_position_y,
-                self.bow.angle,
+                self.window.logic.bow.get_angle(),
                 new_arrow_index,
             )
         )

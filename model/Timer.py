@@ -1,5 +1,6 @@
-import time
 import threading
+import time
+
 
 class Timer:
     def __init__(self, duration=60):

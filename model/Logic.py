@@ -1,6 +1,7 @@
 import json
 
 from model.Arrow import Arrow
+from model.Bow import Bow
 from model.Player import Player
 from model.Timer import Timer
 
@@ -10,16 +11,21 @@ class Logic:
 
     def __init__(self):
         self.player = Player("Player1", "RFID1234")
+        self.bow = Bow(0)
         self.arrows = []
         self.timer = Timer()
 
-    def add_arrow(self, position):
+    def launch_arrow(self):
         """Method to add an arrow to the logic
 
         Args:
             position (tuple): Position of the arrow
         """
-        self.arrows.append(Arrow(position))
+        new_arrow = Arrow((0, 0))
+        print("launch arrow : ", self.bow.angle, self.bow.power)
+        new_arrow.set_initial_velocity(self.bow.angle, self.bow.power)
+        self.arrows.append(new_arrow)
+
         return len(self.arrows) - 1
 
     def update_arrow(self, id, step):
