@@ -99,3 +99,14 @@ class Logic:
 
         with open("../score.json", "w") as json_file:
             json.dump(data, json_file, indent=4)
+
+    def start_game(self):
+        """Method to start the game"""
+        self.timer = Timer()
+        self.arrows = []
+        self.player.score = 0
+
+    def stop_game(self):
+        """Method to stop the game"""
+        self.timer.stop()
+        self.save_player()

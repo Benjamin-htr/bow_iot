@@ -78,6 +78,10 @@ class GameView(arcade.View):
         self.background = arcade.load_texture("../assets/background.png")
 
     def on_show_view(self):
+        """Called when the view is shown"""
+
+        self.window.logic.start_game()
+
         return
 
     def on_draw(self):
@@ -141,11 +145,10 @@ class GameView(arcade.View):
         self.power_indicator.update(self.window.logic.bow.power)
 
         # Update the top bar gui
-        if self.window.logic.timer.get_elapsed_time() is not None:
-            self.top_bar_gui.update(
-                self.window.logic.timer.get_elapsed_time(),
-                self.window.logic.player.score,
-            )
+        self.top_bar_gui.update(
+            self.window.logic.timer.remaining_time,
+            self.window.logic.player.score,
+        )
 
         self.check_colissions()
 
@@ -206,7 +209,6 @@ class GameView(arcade.View):
             arrow.remove_from_sprite_lists()
             self.dummy.hitted = True
             self.window.logic.hitted()
-            print(self.window.logic.timer.get_elapsed_time())
 
     def launch_arrow(self):
         """Launch an arrow"""
@@ -223,6 +225,6 @@ class GameView(arcade.View):
 
     def finish_game(self):
         """Finishes the game and shows the score"""
-        self.window.logic.save_player()
+        self.window.logic.stop_game()
         score_view = ScoreView()
         self.window.show_view(score_view)
