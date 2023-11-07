@@ -2,6 +2,12 @@ import arcade
 
 
 class ArrowSprite(arcade.Sprite):
+    """Represents the arrow sprite
+
+    Args:
+        arcade (arcade.Sprite): Parent class
+    """
+
     def __init__(self, scale, center_x, center_y, angle, arrow_logic_id):
         super().__init__()
         self.scale = scale

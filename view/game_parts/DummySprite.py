@@ -4,6 +4,12 @@ UPDATES_PER_FRAME = 3
 
 
 class DummySprite(arcade.Sprite):
+    """Represents the dummy sprite
+
+    Args:
+        arcade (arcade.Sprite): Parent class
+    """
+
     def __init__(self, scale, center_x, center_y):
         super().__init__()
         self.center_x = center_x
@@ -24,7 +30,7 @@ class DummySprite(arcade.Sprite):
 
     def update_animation(self, delta_time: float = 1 / 60):
         # dummy Idle animation
-        if self.hitted == False:
+        if not self.hitted:
             self.texture = self.idle_dummy
             return
 

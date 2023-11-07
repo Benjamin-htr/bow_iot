@@ -1,13 +1,10 @@
-import math
-
 import arcade
 
-from model.Arrow import Arrow
-from view.gameParts.arrowSprite import ArrowSprite
-from view.gameParts.bowSprite import BowSprite
-from view.gameParts.dummySprite import DummySprite
-from view.gameParts.powerIndicator import PowerIndicator
-from view.score import ScoreView
+from view.game_parts.ArrowSprite import ArrowSprite
+from view.game_parts.BowSprite import BowSprite
+from view.game_parts.DummySprite import DummySprite
+from view.game_parts.PowerIndicator import PowerIndicator
+from view.ScoreView import ScoreView
 
 BOW_SCALING = 1.5
 DUMMY_SCALING = 2
@@ -16,10 +13,14 @@ ARROW_SCALING = 1.5
 ANGLE_SPEED = 5
 BANDAGE_SPEED = 1
 
-# Transform from the meters position to the pixel position
-
 
 def transform_position(position, initial_position=(0, 0)):
+    """Transforms the position of the arrow from the logic to the view
+
+    Args:
+        position (tuple): Position of the arrow in the logic
+        initial_position (tuple, optional): Initial position of the arrow in the view. Defaults to (0, 0).
+    """
     return (
         position[0] * 12 + initial_position[0],
         position[1] * 12 + initial_position[1],
@@ -27,6 +28,12 @@ def transform_position(position, initial_position=(0, 0)):
 
 
 class GameView(arcade.View):
+    """Represents the view where the player can play the game
+
+    Args:
+        arcade (arcade.View): Parent class
+    """
+
     def __init__(self):
         super().__init__()
 
@@ -39,6 +46,8 @@ class GameView(arcade.View):
         self.initial_position_y = self.window.height // 3.5
 
     def setup(self):
+        """Set up the game"""
+
         # Set up the bow
         self.bow = BowSprite(
             BOW_SCALING, self.initial_position_x, self.initial_position_y
@@ -153,6 +162,7 @@ class GameView(arcade.View):
         self.dummy.update_animation()
 
     def check_colissions(self):
+        """Check if an arrow has hit the dummy"""
         # Generate a list of all sprites that collided with the player.
         arrows_hit_list = arcade.check_for_collision_with_list(self.dummy, self.arrows)
 
@@ -165,6 +175,7 @@ class GameView(arcade.View):
             print(self.window.logic.timer.get_elapsed_time())
 
     def launch_arrow(self):
+        """Launch an arrow"""
         new_arrow_index = self.window.logic.add_arrow((0, 0))
         self.window.logic.get_arrow(new_arrow_index).set_initial_velocity(
             self.bow.angle, self.bow.power
@@ -180,6 +191,7 @@ class GameView(arcade.View):
         )
 
     def finish_game(self):
+        """Finishes the game and shows the score"""
         self.window.logic.save_player()
         score_view = ScoreView()
         self.window.show_view(score_view)

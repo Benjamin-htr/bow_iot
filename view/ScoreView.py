@@ -18,6 +18,12 @@ SPRITE_SCALING = 0.5
 
 
 class ScoreView(arcade.View):
+    """Represents the view of the score menu where the player can see the highest scores
+
+    Args:
+        arcade (arcade.View): Parent class
+    """
+
     def __init__(self):
         super().__init__()
         self.scroll_offset = 0
@@ -178,9 +184,9 @@ class ScoreView(arcade.View):
             <= y
             <= HEIGHT - 420 + self.exit_texture.height / 2
         ):
-            from view.menu import MainMenuView
+            from view.MenuView import MenuView
 
-            menu_view = MainMenuView()
+            menu_view = MenuView()
             self.window.show_view(menu_view)
 
         if len(self.data) > self.nb_lines_to_display:

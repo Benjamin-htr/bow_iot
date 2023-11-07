@@ -2,6 +2,8 @@ import arcade
 
 
 class PowerIndicator:
+    """Represents the power indicator bar"""
+
     def __init__(self, center_x, center_y, width, height, border_width):
         self.center_x = center_x
         self.center_y = center_y
@@ -11,9 +13,11 @@ class PowerIndicator:
         self.power = 0
 
     def update(self, power):
+        """Updates the power indicator bar"""
         self.power = power
 
     def draw(self):
+        """Draws the power indicator bar"""
         arcade.draw_rectangle_outline(
             self.center_x,
             self.center_y,

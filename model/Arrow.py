@@ -12,25 +12,29 @@ class Arrow:
         angle_rad = math.radians(angle)
         # Calculer les composantes de la vitesse initiale
         self.velocity = (
-            power/ 1.6 * math.cos(angle_rad),  # vx
-            power/1.6 * math.sin(angle_rad)   # vy
+            power / 1.6 * math.cos(angle_rad),  # vx
+            power / 1.6 * math.sin(angle_rad),  # vy
         )
 
     def update_position_and_velocity(self, time_delta):
         # print(f"Position actuelle : {self.position}")
         # print(f"Vélocité actuelle : {self.velocity}")
         # Mettre à jour la position de la flèche
-        self.position = (self.position[0] + self.velocity[0] * time_delta,self.position[1] + self.velocity[1] * time_delta )
+        self.position = (
+            self.position[0] + self.velocity[0] * time_delta,
+            self.position[1] + self.velocity[1] * time_delta,
+        )
         # Mettre à jour la vitesse verticale
         self.velocity = (
             self.velocity[0],  # vx reste constante
             # vy est affectée par la gravité
-            self.velocity[1] + self.gravity * time_delta
+            self.velocity[1] + self.gravity * time_delta,
         )
 
-
     def get_angle(self):
-        return math.degrees(math.atan(self.velocity[1]/self.velocity[0] if self.velocity[0] else 1))
+        return math.degrees(
+            math.atan(self.velocity[1] / self.velocity[0] if self.velocity[0] else 1)
+        )
 
     def get_nb_next_positions(self, position_nb):
         positions = []

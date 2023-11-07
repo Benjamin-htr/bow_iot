@@ -4,6 +4,12 @@ import arcade
 
 
 class BowSprite(arcade.Sprite):
+    """Repsents the bow sprite
+
+    Args:
+        arcade (arcade.Sprite): Parent class
+    """
+
     def __init__(self, scale, center_x, center_y):
         # Set up parent class
         super().__init__()

@@ -108,5 +108,10 @@
         "uuid": "Player1",
         "name": "DAN",
         "score": 5
+    },
+    {
+        "uuid": "Player1",
+        "name": "ABA",
+        "score": 0
     }
 ]
