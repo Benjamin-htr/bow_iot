@@ -1,35 +1,33 @@
 import time
-
+import threading
 
 class Timer:
-    def __init__(self):
-        self.start_time = None
-        self.elapsed_time = None
+    def __init__(self, duration=60):
+        self.duration = duration
+        self.remaining_time = duration
+        self.is_running = False
 
     def start(self):
-        if self.start_time is not None:
-            print("Timer is already running.")
-        else:
-            self.start_time = time.time()
-            self.elapsed_time = None
-            print("Timer started.")
+        if self.is_running:
+            print("Le minuteur est déjà en cours.")
+            return
+        self.is_running = True
+        self.timer_thread = threading.Thread(target=self._countdown)
+        self.timer_thread.start()
 
-    def stop(self):
-        if self.start_time is None:
-            print("Timer is not running.")
-        else:
-            self.elapsed_time = time.time() - self.start_time
-            self.start_time = None
+    def _countdown(self):
+        while self.remaining_time > 0:
+            print(f"Temps restant : {self.remaining_time} secondes")
+            time.sleep(1)
+            self.remaining_time -= 1
+        print("Minuteur terminé.")
+        self.is_running = False
 
-    def get_elapsed_time(self):
-        if self.elapsed_time is not None:
-            return self.elapsed_time
-        elif self.start_time is not None:
-            return time.time() - self.start_time
+    def set_duration(self, duration):
+        if not self.is_running:
+            self.duration = duration
+            self.remaining_time = duration
+            print(f"Durée du minuteur réglée à {duration} secondes.")
         else:
-            print("Timer has not been started yet.")
-            return None
+            print("Impossible de changer la durée pendant que le minuteur est en cours.")
 
-    def reset(self):
-        self.start_time = None
-        self.elapsed_time = None
