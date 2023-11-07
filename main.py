@@ -1,4 +1,5 @@
 import json
+
 # Ajout pour le plot
 import math
 from time import sleep

@@ -30,11 +30,17 @@ class MainMenuView(arcade.View):
         # Create a vertical BoxGroup to align buttons
         self.v_box = arcade.gui.UIBoxLayout(space_between=20)
 
-        start_button = arcade.gui.UIFlatButton(text="Play", width=200, height=50, style=button_style)
+        start_button = arcade.gui.UIFlatButton(
+            text="Play", width=200, height=50, style=button_style
+        )
 
-        score_button = arcade.gui.UIFlatButton(text="Score", width=200, height=50, style=button_style)
+        score_button = arcade.gui.UIFlatButton(
+            text="Score", width=200, height=50, style=button_style
+        )
 
-        quit_button = arcade.gui.UIFlatButton(text="Exit", width=200, height=50, style=button_style)
+        quit_button = arcade.gui.UIFlatButton(
+            text="Exit", width=200, height=50, style=button_style
+        )
 
         quit_button.on_click = self.exit
         score_button.on_click = self.showScores
@@ -43,7 +49,6 @@ class MainMenuView(arcade.View):
         self.v_box.add(start_button)
         self.v_box.add(score_button)
         self.v_box.add(quit_button)
-
 
         # Create a widget to hold the v_box widget, that will center the buttons
         self.manager.add(
@@ -54,8 +59,6 @@ class MainMenuView(arcade.View):
                 child=self.v_box,
             )
         )
-
-
 
     def on_show_view(self):
         arcade.set_background_color(arcade.color.AIR_SUPERIORITY_BLUE)
@@ -86,6 +89,6 @@ class MainMenuView(arcade.View):
         game_view.setup()
         self.window.show_view(game_view)
 
-    def showChooseName(self, event) :
+    def showChooseName(self, event):
         choose_name_view = ChooseName()
         self.window.show_view(choose_name_view)

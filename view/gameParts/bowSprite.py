@@ -5,7 +5,7 @@ import arcade
 
 class BowSprite(arcade.Sprite):
     def __init__(self, scale, center_x, center_y):
-         # Set up parent class
+        # Set up parent class
         super().__init__()
         self.center_x = center_x
         self.center_y = center_y
@@ -19,15 +19,15 @@ class BowSprite(arcade.Sprite):
         # Load texture for idle animation
         self.bow_idle = arcade.load_texture("../assets/idle_bow.png")
 
-
         # Load texture for bandage animation
-        self.bow_shooting_textures = arcade.load_spritesheet("../assets/bandage_bow_shorter.png", 70, 90, 6, 12)
+        self.bow_shooting_textures = arcade.load_spritesheet(
+            "../assets/bandage_bow_shorter.png", 70, 90, 6, 12
+        )
         print(len(self.bow_shooting_textures))
-
 
     def update_animation(self, delta_time: float = 1 / 60):
         # bow Idle animation
-        if self.change_power == 0 :
+        if self.change_power == 0:
             self.texture = self.bow_idle
             return
 
@@ -49,8 +49,8 @@ class BowSprite(arcade.Sprite):
 
         # bow bandage animation
         self.power += self.change_power
-        if self.power > self.max_power :
+        if self.power > self.max_power:
             self.power = 0
 
-        if self.change_power == 0 :
+        if self.change_power == 0:
             self.power = 0

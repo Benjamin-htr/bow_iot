@@ -186,9 +186,9 @@ class ScoreView(arcade.View):
         if len(self.data) > self.nb_lines_to_display:
             if button == arcade.MOUSE_BUTTON_LEFT:
                 if (
-                    WIDTH *1.25 - self.arrow_button_width / 2
+                    WIDTH * 1.25 - self.arrow_button_width / 2
                     <= x
-                    <= WIDTH *1.25 + self.arrow_button_width / 2
+                    <= WIDTH * 1.25 + self.arrow_button_width / 2
                     and HEIGHT - 60 - self.arrow_button_height / 2
                     <= y
                     <= HEIGHT - 60 + self.arrow_button_height / 2
@@ -196,9 +196,9 @@ class ScoreView(arcade.View):
                     self.scrollDown()
 
                 elif (
-                    WIDTH *1.25 - self.arrow_button_width / 2
+                    WIDTH * 1.25 - self.arrow_button_width / 2
                     <= x
-                    <= WIDTH *1.25 + self.arrow_button_width / 2
+                    <= WIDTH * 1.25 + self.arrow_button_width / 2
                     and 60 - self.arrow_button_height / 2
                     <= y
                     <= 60 + self.arrow_button_height / 2

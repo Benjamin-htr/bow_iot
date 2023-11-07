@@ -1,8 +1,8 @@
 import arcade
 
 
-class ArrowSprite(arcade.Sprite) : 
-    def __init__(self, scale, center_x, center_y, angle, arrow_logic_id) : 
+class ArrowSprite(arcade.Sprite):
+    def __init__(self, scale, center_x, center_y, angle, arrow_logic_id):
         super().__init__()
         self.scale = scale
 
@@ -11,10 +11,8 @@ class ArrowSprite(arcade.Sprite) :
         self.angle = angle
         self.arrow_logic_id = arrow_logic_id
 
-
         # Load texture for idle animation
         self.idle_arrow = arcade.load_texture("../assets/static_arrow.png")
-
 
     def update_animation(self, delta_time: float = 1 / 60):
         # arrow Idle animation
@@ -26,8 +24,3 @@ class ArrowSprite(arcade.Sprite) :
         self.angle = angle
 
         return
-
-
-
-
-    

@@ -4,6 +4,7 @@ from view.game import GameView
 
 ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
+
 class ChooseName(arcade.View):
     def __init__(self):
         super().__init__()
@@ -21,7 +22,9 @@ class ChooseName(arcade.View):
             "bg_color": arcade.color.GRULLO,
         }
 
-        confirm_button = arcade.gui.UIFlatButton(text="Confirm", width=200, height=50, style=button_style)
+        confirm_button = arcade.gui.UIFlatButton(
+            text="Confirm", width=200, height=50, style=button_style
+        )
 
         confirm_button.on_click = self.confirm_name
 
@@ -37,11 +40,8 @@ class ChooseName(arcade.View):
             )
         )
 
-
-
     def on_show_view(self):
         arcade.set_background_color(arcade.color.BLACK)
-
 
     def on_draw(self):
         self.clear()
@@ -84,13 +84,20 @@ class ChooseName(arcade.View):
 
         # Draw button
         self.manager.draw()
-        
-    
+
     def on_key_press(self, key, modifiers):
         if key == arcade.key.UP:
-            self.name = self.name[:self.current_letter] + self.new_letter(self.name[self.current_letter], "up") + self.name[self.current_letter + 1:]
+            self.name = (
+                self.name[: self.current_letter]
+                + self.new_letter(self.name[self.current_letter], "up")
+                + self.name[self.current_letter + 1 :]
+            )
         elif key == arcade.key.DOWN:
-            self.name = self.name[:self.current_letter] + self.new_letter(self.name[self.current_letter], "down") + self.name[self.current_letter + 1:]
+            self.name = (
+                self.name[: self.current_letter]
+                + self.new_letter(self.name[self.current_letter], "down")
+                + self.name[self.current_letter + 1 :]
+            )
         elif key == arcade.key.LEFT:
             self.current_letter = (self.current_letter - 1) % len(self.name)
         elif key == arcade.key.RIGHT:
@@ -106,10 +113,12 @@ class ChooseName(arcade.View):
             index -= 1
         index = index % len(ALPHABET)
         return ALPHABET[index]
-    
+
     def draw_around_letter(self):
         arcade.draw_text(
-            ALPHABET[(ALPHABET.index(self.name[self.current_letter]) + 1) % len(ALPHABET)],
+            ALPHABET[
+                (ALPHABET.index(self.name[self.current_letter]) + 1) % len(ALPHABET)
+            ],
             self.window.width / 2 - 100 + 100 * self.current_letter,
             self.letter_pos_y + 50,
             arcade.color.DIM_GRAY,
@@ -119,7 +128,9 @@ class ChooseName(arcade.View):
         )
 
         arcade.draw_text(
-            ALPHABET[(ALPHABET.index(self.name[self.current_letter]) - 1) % len(ALPHABET)],
+            ALPHABET[
+                (ALPHABET.index(self.name[self.current_letter]) - 1) % len(ALPHABET)
+            ],
             self.window.width / 2 - 100 + 100 * self.current_letter,
             self.letter_pos_y - 50,
             arcade.color.DIM_GRAY,
@@ -127,7 +138,8 @@ class ChooseName(arcade.View):
             anchor_x="center",
             anchor_y="center",
         )
-    def draw_cursor(self) : 
+
+    def draw_cursor(self):
         arcade.draw_rectangle_outline(
             self.window.width / 2 - 100 + 100 * self.current_letter,
             self.letter_pos_y,
@@ -142,17 +154,3 @@ class ChooseName(arcade.View):
         game_view = GameView()
         game_view.setup()
         self.window.show_view(game_view)
-
-        
-
-
-
-        
-
-
-        
-
-
-
-      
-        
