@@ -4,6 +4,7 @@ from view.game_parts.ArrowSprite import ArrowSprite
 from view.game_parts.BowSprite import BowSprite
 from view.game_parts.DummySprite import DummySprite
 from view.game_parts.PowerIndicator import PowerIndicator
+from view.game_parts.TopBarGui import TopBarGui
 from view.ScoreView import ScoreView
 
 BOW_SCALING = 1.5
@@ -41,6 +42,7 @@ class GameView(arcade.View):
         self.dummy = None
         self.arrows = arcade.SpriteList()
         self.power_indicator = None
+        self.top_bar_gui = None
         self.background = None
         self.initial_position_x = 60
         self.initial_position_y = self.window.height // 3.5
@@ -60,6 +62,14 @@ class GameView(arcade.View):
 
         # Set up the power indicator
         self.power_indicator = PowerIndicator(self.window.width - 50, 100, 20, 100, 5)
+
+        # Set up the top bar GUI
+        self.top_bar_gui = TopBarGui(
+            20,
+            self.window.logic.player.name,
+            self.window.width,
+            self.window.height,
+        )
 
         # Set up the background
         self.background = arcade.load_texture("../assets/background.png")
@@ -84,16 +94,11 @@ class GameView(arcade.View):
         # Draw power indicator bar
         self.power_indicator.draw()
 
+        # Draw the top bar gui
+        self.top_bar_gui.draw()
+
         # Draw the arrow
         self.arrows.draw()
-
-        # Draw the score
-        output = f"Score: {self.window.logic.player.score}"
-        arcade.draw_text(output, 10, 20, arcade.color.WHITE, 14)
-
-        # Draw the name of the player
-        output = f"Name: {self.window.logic.player.name}"
-        arcade.draw_text(output, 10, 40, arcade.color.WHITE, 14)
 
     def on_key_press(self, key, modifiers):
         """
@@ -130,6 +135,13 @@ class GameView(arcade.View):
 
         # Update the power indicator
         self.power_indicator.update(self.bow.power)
+
+        # Update the top bar gui
+        if self.window.logic.timer.get_elapsed_time() is not None:
+            self.top_bar_gui.update(
+                self.window.logic.timer.get_elapsed_time(),
+                self.window.logic.player.score,
+            )
 
         self.check_colissions()
 
