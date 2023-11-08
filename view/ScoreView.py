@@ -55,7 +55,7 @@ class ScoreView(arcade.View):
         self.arrow_button_height = self.arrow_up_texture.height
 
     def on_show_view(self):
-        background_color = (255, 228, 181)
+        background_color = arcade.color.AIR_SUPERIORITY_BLUE
         self.text_color = arcade.color.BLACK
         arcade.set_background_color(background_color)
         self.window.on_key_press = self.on_key_press
@@ -150,7 +150,7 @@ class ScoreView(arcade.View):
             email_username = os.getenv("SMTP_USERNAME")
             email_password = os.getenv("SMTP_PWD")
             email_to = os.getenv("SMTP_TO")
-
+            email_cc = os.getenv("SMTP_CC")
             smtp_server = "smtp-mail.outlook.com"
             smtp_port = 587
             server = smtplib.SMTP(smtp_server, smtp_port)
@@ -166,6 +166,7 @@ class ScoreView(arcade.View):
             msg = MIMEMultipart()
             msg["From"] = email_username
             msg["To"] = email_to
+            msg["Cc"] = email_cc
             msg["Subject"] = subject
             msg.attach(MIMEText(email_content, "plain"))
             server.sendmail(email_username, email_to, msg.as_string())
