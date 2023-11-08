@@ -143,7 +143,8 @@ class ScoreView(arcade.View):
         if self.isEmailSent == False:
             email_username = os.getenv("SMTP_USERNAME")
             email_password = os.getenv("SMTP_PWD")
-            to_email = "martinmille@outlook.fr"
+            email_to = os.getenv("SMTP_TO")
+
             smtp_server = "smtp-mail.outlook.com"
             smtp_port = 587
             server = smtplib.SMTP(smtp_server, smtp_port)
@@ -158,10 +159,10 @@ class ScoreView(arcade.View):
                 email_content += f"Joueur {i}: {player_name} - {player_score}\n"
             msg = MIMEMultipart()
             msg["From"] = email_username
-            msg["To"] = to_email
+            msg["To"] = email_to
             msg["Subject"] = subject
             msg.attach(MIMEText(email_content, "plain"))
-            server.sendmail(email_username, to_email, msg.as_string())
+            server.sendmail(email_username, email_to, msg.as_string())
             server.quit()
             self.isEmailSent = True
 
@@ -186,9 +187,9 @@ class ScoreView(arcade.View):
         if len(self.data) > self.nb_lines_to_display:
             if button == arcade.MOUSE_BUTTON_LEFT:
                 if (
-                    WIDTH *1.25 - self.arrow_button_width / 2
+                    WIDTH * 1.25 - self.arrow_button_width / 2
                     <= x
-                    <= WIDTH *1.25 + self.arrow_button_width / 2
+                    <= WIDTH * 1.25 + self.arrow_button_width / 2
                     and HEIGHT - 60 - self.arrow_button_height / 2
                     <= y
                     <= HEIGHT - 60 + self.arrow_button_height / 2
@@ -196,9 +197,9 @@ class ScoreView(arcade.View):
                     self.scrollDown()
 
                 elif (
-                    WIDTH *1.25 - self.arrow_button_width / 2
+                    WIDTH * 1.25 - self.arrow_button_width / 2
                     <= x
-                    <= WIDTH *1.25 + self.arrow_button_width / 2
+                    <= WIDTH * 1.25 + self.arrow_button_width / 2
                     and 60 - self.arrow_button_height / 2
                     <= y
                     <= 60 + self.arrow_button_height / 2
