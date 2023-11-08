@@ -1,5 +1,5 @@
 import arcade
-
+import os
 from model.Logic import Logic
 from view.GameView import GameView
 from view.MenuView import MenuView
@@ -21,4 +21,5 @@ def launch_app():
 
 
 if __name__ == "__main__":
+    os.environ['PYOPENGL_PLATFORM'] = 'egl'
     launch_app()
