@@ -31,6 +31,8 @@ class ScoreView(arcade.View):
         self.nb_lines_to_display = 15
         self.text_color = arcade.color.BLACK
         self.isEmailSent = False
+        self.manager = arcade.gui.UIManager()
+        self.manager.enable()
         self.data = []
         self.button_style = {
             "font_name": ("Comic Sans MS"),
@@ -53,6 +55,25 @@ class ScoreView(arcade.View):
 
         self.arrow_button_width = self.arrow_up_texture.width
         self.arrow_button_height = self.arrow_up_texture.height
+        email_button = arcade.gui.UIFlatButton(
+            text="Send email", width=200, height=50, style=self.button_style
+        )
+        email_button.on_click = self.sendEmail
+        self.v_box = arcade.gui.UIBoxLayout(space_between=20)
+        self.v_box.add(email_button)
+        # self.uimanager.add(
+        #     arcade.gui.UIAnchorWidget(
+        #         anchor_x="center_x", align_y=-250, child=email_button
+        #     )
+        # )
+        self.manager.add(
+            arcade.gui.UIAnchorWidget(
+                align_y=-200,
+                anchor_x="center_x",
+                anchor_y="center_y",
+                child=self.v_box,
+            )
+        )
 
     def on_show_view(self):
         background_color = arcade.color.AIR_SUPERIORITY_BLUE
@@ -63,6 +84,8 @@ class ScoreView(arcade.View):
 
     def on_draw(self):
         self.clear()
+
+        self.manager.draw()
         arcade.draw_texture_rectangle(
             WIDTH - 650,
             HEIGHT - 420,
@@ -81,17 +104,7 @@ class ScoreView(arcade.View):
         )
         self.uimanager = arcade.gui.UIManager()
         self.uimanager.enable()
-        if self.isEmailSent == False:
-            email_button = arcade.gui.UIFlatButton(
-                text="Send email", width=200, height=50, style=self.button_style
-            )
-            email_button.on_click = self.sendEmail
-            self.uimanager.add(
-                arcade.gui.UIAnchorWidget(
-                    anchor_x="center_x", align_y=-250, child=email_button
-                )
-            )
-        else:
+        if self.isEmailSent == True:
             arcade.draw_text(
                 "Email sent !",
                 150,
