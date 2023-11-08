@@ -14,6 +14,9 @@ class Bow:
     def load_sprite(self, sprite: BowSprite):
         self.sprite = sprite
 
+    def set_angle(self, angle):
+        self.angle = angle
+
     def add_angle(self, angle):
         self.angle += angle
 

@@ -120,6 +120,10 @@ class GameView(arcade.View):
             self.window.logic.bow.turn_right()
         elif key == arcade.key.ESCAPE:
             self.finish_game()
+        elif key == arcade.key.A:
+            self.window.logic.bow.add_angle(40)
+        elif key == arcade.key.Z:
+            self.window.logic.bow.add_angle(-40)
 
     def on_key_release(self, key, modifiers):
         # when the key is released, the arrow is shot

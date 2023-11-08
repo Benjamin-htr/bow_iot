@@ -18,5 +18,10 @@
         "uuid": "Player1",
         "name": "BEN",
         "score": 43
+    },
+    {
+        "uuid": "Player1",
+        "name": "MIL",
+        "score": 19
     }
 ]
