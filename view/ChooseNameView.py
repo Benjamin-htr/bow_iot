@@ -1,10 +1,18 @@
 import arcade
 
-from view.game import GameView
+from view.GameView import GameView
 
 ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-class ChooseName(arcade.View):
+
+class ChooseNameView(arcade.View):
+    """Represents the view where the player can choose his name
+
+    Args:
+        arcade (arcade.Sprite): Parent class
+
+    """
+
     def __init__(self):
         super().__init__()
         self.name = "AAA"
@@ -21,7 +29,9 @@ class ChooseName(arcade.View):
             "bg_color": arcade.color.GRULLO,
         }
 
-        confirm_button = arcade.gui.UIFlatButton(text="Confirm", width=200, height=50, style=button_style)
+        confirm_button = arcade.gui.UIFlatButton(
+            text="Confirm", width=200, height=50, style=button_style
+        )
 
         confirm_button.on_click = self.confirm_name
 
@@ -37,11 +47,8 @@ class ChooseName(arcade.View):
             )
         )
 
-
-
     def on_show_view(self):
         arcade.set_background_color(arcade.color.BLACK)
-
 
     def on_draw(self):
         self.clear()
@@ -84,13 +91,20 @@ class ChooseName(arcade.View):
 
         # Draw button
         self.manager.draw()
-        
-    
+
     def on_key_press(self, key, modifiers):
         if key == arcade.key.UP:
-            self.name = self.name[:self.current_letter] + self.new_letter(self.name[self.current_letter], "up") + self.name[self.current_letter + 1:]
+            self.name = (
+                self.name[: self.current_letter]
+                + self.new_letter(self.name[self.current_letter], "up")
+                + self.name[self.current_letter + 1 :]
+            )
         elif key == arcade.key.DOWN:
-            self.name = self.name[:self.current_letter] + self.new_letter(self.name[self.current_letter], "down") + self.name[self.current_letter + 1:]
+            self.name = (
+                self.name[: self.current_letter]
+                + self.new_letter(self.name[self.current_letter], "down")
+                + self.name[self.current_letter + 1 :]
+            )
         elif key == arcade.key.LEFT:
             self.current_letter = (self.current_letter - 1) % len(self.name)
         elif key == arcade.key.RIGHT:
@@ -99,6 +113,12 @@ class ChooseName(arcade.View):
             self.confirm_name(None)
 
     def new_letter(self, letter, direction):
+        """Returns the new letter
+
+        Args:
+            letter (str): Letter to change
+            direction (str): Direction to change the letter
+        """
         index = ALPHABET.index(letter)
         if direction == "up":
             index += 1
@@ -106,10 +126,13 @@ class ChooseName(arcade.View):
             index -= 1
         index = index % len(ALPHABET)
         return ALPHABET[index]
-    
+
     def draw_around_letter(self):
+        """Draws the letters around the current letter"""
         arcade.draw_text(
-            ALPHABET[(ALPHABET.index(self.name[self.current_letter]) + 1) % len(ALPHABET)],
+            ALPHABET[
+                (ALPHABET.index(self.name[self.current_letter]) + 1) % len(ALPHABET)
+            ],
             self.window.width / 2 - 100 + 100 * self.current_letter,
             self.letter_pos_y + 50,
             arcade.color.DIM_GRAY,
@@ -119,7 +142,9 @@ class ChooseName(arcade.View):
         )
 
         arcade.draw_text(
-            ALPHABET[(ALPHABET.index(self.name[self.current_letter]) - 1) % len(ALPHABET)],
+            ALPHABET[
+                (ALPHABET.index(self.name[self.current_letter]) - 1) % len(ALPHABET)
+            ],
             self.window.width / 2 - 100 + 100 * self.current_letter,
             self.letter_pos_y - 50,
             arcade.color.DIM_GRAY,
@@ -127,7 +152,9 @@ class ChooseName(arcade.View):
             anchor_x="center",
             anchor_y="center",
         )
-    def draw_cursor(self) : 
+
+    def draw_cursor(self):
+        """Draw a rectangle around the current letter"" """
         arcade.draw_rectangle_outline(
             self.window.width / 2 - 100 + 100 * self.current_letter,
             self.letter_pos_y,
@@ -138,21 +165,12 @@ class ChooseName(arcade.View):
         )
 
     def confirm_name(self, event):
+        """Confirm the name and start the game
+
+        Args:
+            event (arcade.gui.UIEvent, optional): Event. Defaults to None.
+        """
         self.window.logic.player.name = self.name
         game_view = GameView()
         game_view.setup()
         self.window.show_view(game_view)
-
-        
-
-
-
-        
-
-
-        
-
-
-
-      
-        
