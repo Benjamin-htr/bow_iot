@@ -20,13 +20,18 @@ class ScanRfidTag(arcade.View):
         self.is_confirm = False
         self.go_to_game = False
 
-        # Create an text input field
-        self.input_field = gui.UIInputText(
-            color=arcade.color.DARK_BLUE_GRAY,
-            font_size=24,
-            width=300,
-            text=self.window.logic.player.rfid_tag,
-        )
+        self.input_field = None
+
+        if not self.window.mqtt_obs:
+            # Create an text input field
+            self.input_field = gui.UIInputText(
+                color=arcade.color.DARK_BLUE_GRAY,
+                font_size=24,
+                width=300,
+                text=self.window.logic.player.rfid_tag,
+            )
+
+            self.h_box.add(self.input_field)
 
         # Create a button
         submit_button = gui.UIFlatButton(
@@ -34,18 +39,22 @@ class ScanRfidTag(arcade.View):
         )
         submit_button.on_click = self.confirm_rfid
 
-        self.h_box.add(self.input_field)
         self.h_box.add(submit_button)
 
         self.manager.add(
             arcade.gui.UIAnchorWidget(
                 align_y=100,
+                align_x=200,
                 child=self.h_box,
             )
         )
 
     def on_show_view(self):
-        self.set_rfid_tag(self.input_field.text)
+        self.set_rfid_tag(self.window.logic.player.rfid_tag)
+        if self.window.mqtt_obs:
+            self.window.mqtt_obs.reset()
+            self.window.mqtt_obs.setRfid = self.on_scan_card
+            self.window.mqtt_obs.onButton1Pressed = self.confirm_rfid
 
         arcade.set_background_color(arcade.color.BUD_GREEN)
 
@@ -80,6 +89,15 @@ class ScanRfidTag(arcade.View):
             anchor_y="center",
         )
 
+        if self.window.mqtt_obs:
+            arcade.draw_text(
+                self.window.logic.player.rfid_tag,
+                500,
+                self.window.height - 200,
+                arcade.color.DARK_BLUE_GRAY,
+                font_size=24,
+            )
+
         arcade.draw_text(
             "Corresponding name: ",
             self.window.width / 2,
@@ -105,8 +123,16 @@ class ScanRfidTag(arcade.View):
         )
 
     def on_key_press(self, key, modifiers):
-        self.set_rfid_tag(self.input_field.text)
+        if self.input_field:
+            self.set_rfid_tag(self.input_field.text)
         return
+
+    def on_scan_card(self, rfid_tag):
+        print(rfid_tag)
+        self.go_to_game = self.window.logic.set_player(rfid_tag)
+        print("player rfid : ", self.window.logic.player.rfid_tag)
+        # self.manager.trigger_render()
+        # self.input_field.text = rfid_tag
 
     def set_rfid_tag(self, rfid_tag):
         self.go_to_game = self.window.logic.set_player(rfid_tag)
@@ -118,7 +144,7 @@ class ScanRfidTag(arcade.View):
         Args:
             event (arcade.gui.UIEvent, optional): Event. Defaults to None.
         """
-        self.go_to_game = self.window.logic.set_player(self.input_field.text)
+        # self.go_to_game = self.window.logic.set_player(self.input_field.text)
         print(self.window.logic.player.rfid_tag)
         print(self.window.logic.player.name)
         self.is_confirm = True

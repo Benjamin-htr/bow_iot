@@ -82,16 +82,25 @@ class GameView(arcade.View):
 
     def on_show_view(self):
         """Called when the view is shown"""
-
         if self.window.mqtt_obs:
             self.window.mqtt_obs.reset()
             self.window.mqtt_obs.onButton1Pressed = self.window.logic.bow.bandage
             self.window.mqtt_obs.onButton1Released = self.launch_arrow
             self.window.mqtt_obs.onPotarChanged = self.window.logic.bow.set_angle
+            self.window.mqtt_obs.onUltChanged = self.on_detect_distance
+            self.window.mqtt_obs.sendScore(0)
 
         self.window.logic.start_game()
 
         return
+
+    def on_detect_distance(self, ratio):
+        """Called when the distance is detected
+
+        Args:
+            ratio (float): Ratio of the distance
+        """
+        self.dummy.set_center_y(self.window.height * ratio)
 
     def on_draw(self):
         self.clear()
@@ -180,7 +189,7 @@ class GameView(arcade.View):
                 self.window.logic.get_arrow(arrow.arrow_logic_id).position,
                 (self.initial_position_x, self.initial_position_y),
             )
-            print(new_position)
+            # print(new_position)
             arrow.update(
                 new_position[0],
                 new_position[1],
@@ -200,22 +209,22 @@ class GameView(arcade.View):
         # Update the dummy animation
         self.dummy.update_animation()
 
-        print(
-            "bow logic angle : ",
-            self.window.logic.bow.get_angle(),
-            "bow sprite angle : ",
-            self.bow.angle,
-        )
-        print(
-            "bow logic power : ",
-            self.window.logic.bow.power,
-        )
-        print(
-            "nb arrows logic : ",
-            len(self.window.logic.get_arrows()),
-            "nb arrows view : ",
-            len(self.arrows),
-        )
+        # print(
+        #     "bow logic angle : ",
+        #     self.window.logic.bow.get_angle(),
+        #     "bow sprite angle : ",
+        #     self.bow.angle,
+        # )
+        # print(
+        #     "bow logic power : ",
+        #     self.window.logic.bow.power,
+        # )
+        # print(
+        #     "nb arrows logic : ",
+        #     len(self.window.logic.get_arrows()),
+        #     "nb arrows view : ",
+        #     len(self.arrows),
+        # )
 
     def check_colissions(self):
         """Check if an arrow has hit the dummy"""
@@ -228,9 +237,13 @@ class GameView(arcade.View):
             arrow.remove_from_sprite_lists()
             self.dummy.hitted = True
             self.window.logic.hitted()
+            if self.window.mqtt_obs:
+                self.window.mqtt_obs.sendVictory()
+                self.window.mqtt_obs.sendScore(self.window.logic.player.score)
 
     def launch_arrow(self):
         """Launch an arrow"""
+        print("launch arrow")
         new_arrow_index = self.window.logic.launch_arrow()
         self.arrows.append(
             ArrowSprite(
