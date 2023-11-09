@@ -69,12 +69,17 @@ class Logic:
         """
         with open("../score.json", "r") as json_file:
             data = json.load(json_file)
+            print(id)
+            result = False
             for obj in data:
+                print("uuid ", obj["uuid"])
                 if obj["uuid"] == id:
                     self.player = Player(obj["uuid"], obj["name"], obj["score"])
-                    return True
+                    result = True
+                    return result
                 else:
-                    return False
+                    self.player.rfid_tag = id
+            return result
 
     def set_player_with_info(self, id, name, score):
         """Method to set the player with info

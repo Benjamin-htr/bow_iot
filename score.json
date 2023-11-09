@@ -13,5 +13,30 @@
         "uuid": "12345",
         "name": "BAZ",
         "score": 0
+    },
+    {
+        "uuid": "12345",
+        "name": "BAW",
+        "score": 5
+    },
+    {
+        "uuid": "12345",
+        "name": "ZAA",
+        "score": 0
+    },
+    {
+        "uuid": "12",
+        "name": "CAA",
+        "score": 1
+    },
+    {
+        "uuid": "12345",
+        "name": "BAZ",
+        "score": 0
+    },
+    {
+        "uuid": "123",
+        "name": "ZAB",
+        "score": 4
     }
 ]

@@ -16,7 +16,7 @@ class ScanRfidTag(arcade.View):
         super().__init__()
         self.manager = gui.UIManager()
         self.manager.enable()
-        self.h_box = gui.UIBoxLayout(vertical=False, space_between=50)
+        self.h_box = gui.UIBoxLayout(vertical=False, space_between=10)
         self.is_confirm = False
         self.go_to_game = False
 
@@ -24,7 +24,7 @@ class ScanRfidTag(arcade.View):
         self.input_field = gui.UIInputText(
             color=arcade.color.DARK_BLUE_GRAY,
             font_size=24,
-            width=200,
+            width=300,
             text=self.window.logic.player.rfid_tag,
         )
 

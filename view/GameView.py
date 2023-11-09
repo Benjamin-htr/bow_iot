@@ -60,7 +60,10 @@ class GameView(arcade.View):
 
         # Set up the dummy
         self.dummy = DummySprite(
-            DUMMY_SCALING, self.window.width - 150, self.window.height // 3.5
+            DUMMY_SCALING,
+            self.window.width - 150,
+            self.window.height // 3.5,
+            window_height=self.window.height,
         )
 
         # Set up the power indicator
@@ -132,6 +135,10 @@ class GameView(arcade.View):
             self.window.logic.bow.add_angle(40)
         elif key == arcade.key.Z:
             self.window.logic.bow.add_angle(-40)
+        elif key == arcade.key.UP:
+            self.dummy.set_center_y(self.dummy.center_y + 10)
+        elif key == arcade.key.DOWN:
+            self.dummy.set_center_y(self.dummy.center_y - 10)
 
     def on_key_release(self, key, modifiers):
         # when the key is released, the arrow is shot
