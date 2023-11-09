@@ -1,3 +1,5 @@
+import threading
+
 import arcade
 
 from view.game_parts.ArrowSprite import ArrowSprite
@@ -78,6 +80,12 @@ class GameView(arcade.View):
     def on_show_view(self):
         """Called when the view is shown"""
 
+        if self.window.mqtt_obs:
+            self.window.mqtt_obs.reset()
+            self.window.mqtt_obs.onButton1Pressed = self.window.logic.bow.bandage
+            self.window.mqtt_obs.onButton1Released = self.launch_arrow
+            self.window.mqtt_obs.onPotarChanged = self.window.logic.bow.set_angle
+
         self.window.logic.start_game()
 
         return
@@ -129,8 +137,6 @@ class GameView(arcade.View):
         # when the key is released, the arrow is shot
         if key == arcade.key.SPACE:
             self.launch_arrow()
-            self.window.logic.bow.stop_bandage()
-            self.window.logic.timer.start()
 
         if key == arcade.key.LEFT or key == arcade.key.RIGHT:
             self.window.logic.bow.stop_turn()
@@ -228,6 +234,8 @@ class GameView(arcade.View):
                 new_arrow_index,
             )
         )
+        self.window.logic.bow.stop_bandage()
+        self.window.logic.timer.start()
 
     def finish_game(self):
         """Finishes the game and shows the score"""

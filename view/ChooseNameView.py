@@ -46,8 +46,16 @@ class ChooseNameView(arcade.View):
                 child=confirm_button,
             )
         )
+        self.is_confirm = False
 
     def on_show_view(self):
+        if self.window.mqtt_obs:
+            self.window.mqtt_obs.reset()
+            self.window.mqtt_obs.onButton1Pressed = self.next_letter
+            self.window.mqtt_obs.onPotarChanged = self.change_name_with_angle
+            self.window.mqtt_obs.onButton1Pressed = self.previous_letter
+            self.window.mqtt_obs.onButton2Pressed = self.confirm_name
+
         arcade.set_background_color(arcade.color.BLACK)
 
     def on_draw(self):
@@ -92,25 +100,56 @@ class ChooseNameView(arcade.View):
         # Draw button
         self.manager.draw()
 
+        if self.is_confirm:
+            self.window.logic.player.name = self.name
+            game_view = GameView()
+            game_view.setup()
+            self.window.show_view(game_view)
+
+    # change the name the angle of the potar between 0 and 360
+    def change_name_with_angle(self, potar_angle):
+        """Change the name with the angle of the potar"""
+        self.name = (
+            self.name[: self.current_letter]
+            + ALPHABET[int(potar_angle / 360 * (len(ALPHABET) - 1))]
+            + self.name[self.current_letter + 1 :]
+        )
+
     def on_key_press(self, key, modifiers):
         if key == arcade.key.UP:
-            self.name = (
-                self.name[: self.current_letter]
-                + self.new_letter(self.name[self.current_letter], "up")
-                + self.name[self.current_letter + 1 :]
-            )
+            self.increase_letter()
         elif key == arcade.key.DOWN:
-            self.name = (
-                self.name[: self.current_letter]
-                + self.new_letter(self.name[self.current_letter], "down")
-                + self.name[self.current_letter + 1 :]
-            )
+            self.decrease_letter()
         elif key == arcade.key.LEFT:
-            self.current_letter = (self.current_letter - 1) % len(self.name)
+            self.previous_letter()
         elif key == arcade.key.RIGHT:
-            self.current_letter = (self.current_letter + 1) % len(self.name)
+            self.next_letter()
         elif key == arcade.key.ENTER:
             self.confirm_name(None)
+
+    def increase_letter(self):
+        """Increase the current letter"""
+        self.name = (
+            self.name[: self.current_letter]
+            + self.new_letter(self.name[self.current_letter], "up")
+            + self.name[self.current_letter + 1 :]
+        )
+
+    def decrease_letter(self):
+        """Decrease the current letter"""
+        self.name = (
+            self.name[: self.current_letter]
+            + self.new_letter(self.name[self.current_letter], "down")
+            + self.name[self.current_letter + 1 :]
+        )
+
+    def next_letter(self):
+        """Change the current letter to the next one"""
+        self.current_letter = (self.current_letter + 1) % len(self.name)
+
+    def previous_letter(self):
+        """Change the current letter to the previous one"""
+        self.current_letter = (self.current_letter - 1) % len(self.name)
 
     def new_letter(self, letter, direction):
         """Returns the new letter
@@ -164,13 +203,10 @@ class ChooseNameView(arcade.View):
             4,
         )
 
-    def confirm_name(self, event):
+    def confirm_name(self, event=None):
         """Confirm the name and start the game
 
         Args:
             event (arcade.gui.UIEvent, optional): Event. Defaults to None.
         """
-        self.window.logic.player.name = self.name
-        game_view = GameView()
-        game_view.setup()
-        self.window.show_view(game_view)
+        self.is_confirm = True
