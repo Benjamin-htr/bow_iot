@@ -1,71 +1,16 @@
 [
     {
-        "uuid": "Player1",
-        "name": "AXL",
-        "score": 14
-    },
-    {
-        "uuid": "Player1",
-        "name": "BEN",
-        "score": 41
-    },
-    {
-        "uuid": "Player1",
-        "name": "AXL",
-        "score": 27
-    },
-    {
-        "uuid": "Player1",
-        "name": "BEN",
-        "score": 43
-    },
-    {
-        "uuid": "Player1",
-        "name": "MIL",
-        "score": 19
-    },
-    {
-        "uuid": "Player1",
+        "uuid": "12345",
         "name": "BAZ",
-        "score": 5
-    },
-    {
-        "uuid": "Player1",
-        "name": "UAA",
-        "score": 0
-    },
-    {
-        "uuid": "Player1",
-        "name": "AAA",
-        "score": 0
-    },
-    {
-        "uuid": "Player1",
-        "name": "WAA",
-        "score": 3
-    },
-    {
-        "uuid": "Player1",
-        "name": "AAA",
-        "score": 18
-    },
-    {
-        "uuid": "Player1",
-        "name": "MET",
-        "score": 31
-    },
-    {
-        "uuid": "Player1",
-        "name": "AAA",
         "score": 1
     },
     {
-        "uuid": "Player1",
-        "name": "AAA",
+        "uuid": "12345",
+        "name": "BAZ",
         "score": 0
     },
     {
-        "uuid": "Player1",
+        "uuid": "12345",
         "name": "BAZ",
         "score": 0
     }

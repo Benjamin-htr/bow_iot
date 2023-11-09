@@ -5,6 +5,7 @@ import arcade.gui
 
 from view.ChooseNameView import ChooseNameView
 from view.GameView import GameView
+from view.ScanRfidTag import ScanRfidTag
 from view.ScoreView import ScoreView
 
 file_path = os.path.dirname(os.path.abspath(__file__))
@@ -50,7 +51,7 @@ class MenuView(arcade.View):
 
         quit_button.on_click = self.exit
         score_button.on_click = self.show_scores
-        start_button.on_click = self.show_choose_name
+        start_button.on_click = self.show_scan_rfid
 
         self.v_box.add(start_button)
         self.v_box.add(score_button)
@@ -67,7 +68,7 @@ class MenuView(arcade.View):
         )
 
     def on_show_view(self):
-        arcade.set_background_color(arcade.color.AIR_SUPERIORITY_BLUE)
+        arcade.set_background_color(arcade.color.BUD_GREEN)
 
     def on_draw(self):
         self.clear()
@@ -118,3 +119,12 @@ class MenuView(arcade.View):
         """
         choose_name_view = ChooseNameView()
         self.window.show_view(choose_name_view)
+
+    def show_scan_rfid(self, event):
+        """Shows the scan rfid view
+
+        Args:
+            event (arcade.gui.UIEvent): Event that triggered the function
+        """
+        scan_rfid_view = ScanRfidTag()
+        self.window.show_view(scan_rfid_view)

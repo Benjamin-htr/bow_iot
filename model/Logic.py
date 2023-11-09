@@ -10,7 +10,7 @@ class Logic:
     """Class to represent the main logic of the game"""
 
     def __init__(self):
-        self.player = Player("Player1", "RFID1234")
+        self.player = Player("12345", "Player1")
         self.bow = Bow(0)
         self.arrows = []
         self.timer = Timer()
@@ -71,9 +71,10 @@ class Logic:
             data = json.load(json_file)
             for obj in data:
                 if obj["uuid"] == id:
-                    self.player = Player(obj["name"], obj["uuid"], obj["score"])
+                    self.player = Player(obj["uuid"], obj["name"], obj["score"])
+                    return True
                 else:
-                    return "non"
+                    return False
 
     def set_player_with_info(self, id, name, score):
         """Method to set the player with info
